@@ -17,6 +17,6 @@ class IngredientsItemModels extends HiveObject {
     required this.ingredientname,
     required this.ingredientModels,
     required this.price,
-    required this.materialsUnit,
+    required this.materialsUnit, 
   });
 }
