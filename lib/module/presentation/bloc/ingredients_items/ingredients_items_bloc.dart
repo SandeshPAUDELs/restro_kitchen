@@ -23,5 +23,12 @@ class IngredientsItemsBloc
       final ingredientItems = ingredientsItemsUsecases.getIngredientsItems();
       emit(IngredientsItemsLoadedState(ingredientItems: ingredientItems));
     });
+    on<LoadIngredientItemsByIngredientEvent>((event, emit) async {
+      emit(IngredientsItemsLoadingState());
+      final filteredItems = ingredientsItemsUsecases.getIngredientsItems()
+          .where((item) => item.ingredientModels == event.ingredientKey)
+          .toList();
+      emit(IngredientsItemsLoadedState(ingredientItems: filteredItems));
+    });
   }
 }

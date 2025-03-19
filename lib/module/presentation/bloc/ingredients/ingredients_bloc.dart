@@ -16,7 +16,5 @@ class IngredientsBloc extends Bloc<IngredientsEvents, IngredientsState>{
       final ingredients = ingredientsUsecases.getIngredients();
       emit(IngredientsLoadedState(ingredients: ingredients));
     });
-
   }
-
 }

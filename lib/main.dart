@@ -1,3 +1,4 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_project/module/presentation/bloc/ingredients/ingredients_bloc.dart';
@@ -7,9 +8,9 @@ import 'package:hive_project/service_locator.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await injection(); 
+  await injection();
 
-  runApp(const MyApp());
+  runApp(DevicePreview(enabled: true, builder: (context) => const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -19,14 +20,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) => IngredientsBloc(getIt()),
-        ),
-        BlocProvider(
-          create: (context) => IngredientsItemsBloc(getIt()),
-        ),
+        BlocProvider(create: (context) => IngredientsBloc(getIt())),
+        BlocProvider(create: (context) => IngredientsItemsBloc(getIt())),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+
         title: 'Flutter Demo',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),

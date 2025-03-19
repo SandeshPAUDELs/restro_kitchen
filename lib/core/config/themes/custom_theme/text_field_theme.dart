@@ -7,6 +7,33 @@ class TextFieldsTheme {
     BuildContext context,
     TextEditingController controller,
     String hintText,
+    String? Function(String?)? validator,
+  ) {
+    return TextFormField(
+      controller: controller,
+      style: TextThemes.createTextTheme(context).bodyMedium,
+      decoration: InputDecoration(
+        hintText: hintText,
+        border: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(CommonStyle.borderRadius),
+          ),
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          vertical: CommonStyle.screenpadding,
+          horizontal: CommonStyle.screenpadding,
+        ),
+        filled: true,
+        fillColor: Colors.white,
+      ),
+      validator: validator,
+    );
+  }
+
+  static TextFormField createSearchField(
+    BuildContext context,
+    TextEditingController controller,
+    String hintText,
     void Function(String)? onSubmitted,
   ) {
     return TextFormField(
@@ -25,6 +52,10 @@ class TextFieldsTheme {
         ),
         filled: true,
         fillColor: Colors.white,
+        suffixIcon: IconButton(
+          icon: const Icon(Icons.search),
+          onPressed: () {},
+        ),
       ),
       onFieldSubmitted: onSubmitted,
     );

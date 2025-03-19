@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_project/common/widgets/containers_within_screens.dart';
+import 'package:hive_project/core/config/themes/custom_theme/app_bar_theme.dart';
+import 'package:hive_project/core/config/themes/custom_theme/text_field_theme.dart';
 import 'package:hive_project/module/data/models/ingredients/ingredients_models.dart';
-import 'package:hive_project/module/data/models/ingredients_items/ingredients_item_models.dart';
 import 'package:hive_project/module/presentation/bloc/ingredients_items/ingredients_items_bloc.dart';
 import 'package:hive_project/module/presentation/bloc/ingredients_items/ingredients_items_events.dart';
+import 'package:hive_project/module/presentation/bloc/ingredients_items/ingredients_items_state.dart';
 
 class IngredientItemsScreen extends StatefulWidget {
   const IngredientItemsScreen({super.key});
@@ -18,97 +21,174 @@ class _IngredientItemsScreenState extends State<IngredientItemsScreen> {
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _unitController = TextEditingController();
   IngredientModels? _selectedIngredient;
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<IngredientsItemsBloc>().add(LoadIngredientsItemsEvents());
+  }
 
   @override
   Widget build(BuildContext context) {
-    final Box<IngredientModels> ingredientBox =
-        Hive.box<IngredientModels>('ingredientBox');
+    final Box<IngredientModels> ingredientBox = Hive.box<IngredientModels>(
+      'ingredientBox',
+    );
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Add Ingredient Item')),
+      appBar: CustomeAppBarTheme.appBarThemewithNavigation(
+        context,
+        'Add Ingredient Item',
+      ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                DropdownButton<IngredientModels>(
-                  hint: const Text('Select Ingredient'),
-                  value: _selectedIngredient, 
-                  isExpanded: true,
-                  items: ingredientBox.values.map((ingredient) {
-                    return DropdownMenuItem(
-                      value: ingredient,
-                      child: Text(ingredient.name),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedIngredient = value; 
-                    });
-                  },
-                ),
-                TextField(
-                    controller: _itemNameController,
-                    decoration: const InputDecoration(labelText: 'Item Name')),
-                TextField(
-                    controller: _priceController,
-                    decoration: const InputDecoration(labelText: 'Price'),
-                    keyboardType: TextInputType.number),
-                TextField(
-                    controller: _unitController,
-                    decoration: const InputDecoration(labelText: 'Units'),
-                    keyboardType: TextInputType.number),
-                const SizedBox(height: 10),
-                ElevatedButton(
-                    onPressed: () {
-                      final name = _itemNameController.text.trim();
-                      final price = double.tryParse(_priceController.text) ?? 0.0;
-                      final units = int.tryParse(_unitController.text) ?? 1;
-
-                      if (name.isNotEmpty && _selectedIngredient != null) {
-                        _itemNameController.clear();
-                        _priceController.clear();
-                        _unitController.clear();
-                        context.read<IngredientsItemsBloc>().add(
-                          AddIngredientsItemsEvents(
-                            ingredientname: name,
-                            ingredientModels: _selectedIngredient!.key as int, 
-                            price: price,
-                            materialsUnit: units,
-                          ),
-                        );
-                      }
-                    },
-                    child: const Text('Add Item')),
-              ],
-            ),
+          ContainersWithinScreens.createheadinginSeller(
+            context,
+            'Item Name',
+            'Price',
+            'Units',
           ),
+
           Expanded(
-            child: ValueListenableBuilder(
-              valueListenable:
-                  Hive.box<IngredientsItemModels>('ingredientItemBox')
-                      .listenable(),
-              builder: (context, Box<IngredientsItemModels> box, _) {
-                final filteredItems = box.values.toList();
-                if (filteredItems.isEmpty) {
-                  return const Center(child: Text('No items added.'));
+            child: BlocBuilder<IngredientsItemsBloc, IngredientsItemsState>(
+              builder: (context, state) {
+                if (state is IngredientsItemsLoadedState) {
+                  return ListView.builder(
+                    itemCount: state.ingredientItems.length,
+                    itemBuilder: (context, index) {
+                      final item = state.ingredientItems[index];
+                      return ContainersWithinScreens.createTableBodyforSeller(
+                        context,
+                        item.ingredientname,
+                        item.price.toString(),
+                        item.materialsUnit.toString(),
+                      );
+                      
+                    },
+                  );
                 }
-                return ListView.builder(
-                  itemCount: filteredItems.length,
-                  itemBuilder: (context, index) {
-                    final item = filteredItems[index];
-                    return ListTile(
-                      title: Text(item.ingredientname),
-                      subtitle: Text(
-                            'Ingredient: ${ingredientBox.get(item.ingredientModels)?.name ?? "Unknown"}, Price: \$${item.price}, Units: ${item.materialsUnit}'),
-                    );
-                  },
-                );
+                return const Center(child: Text('No items added.'));
               },
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text('Add Ingredient Item'),
+                content: SingleChildScrollView(
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        DropdownButtonFormField<IngredientModels>(
+                          decoration: const InputDecoration(
+                            labelText: 'Select Ingredient',
+                            border: OutlineInputBorder(),
+                          ),
+                          hint: const Text('Select Ingredient'),
+                          value: _selectedIngredient,
+                          isExpanded: true,
+                          items:
+                              ingredientBox.values.map((ingredient) {
+                                return DropdownMenuItem(
+                                  value: ingredient,
+                                  child: Text(ingredient.name),
+                                );
+                              }).toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedIngredient = value;
+                            });
+                          },
+                          validator: (value) {
+                            if (value == null) {
+                              return 'Please select an ingredient';
+                            }
+                            return null;
+                          },
+                        ),
+                        TextFieldsTheme.createTextField(
+                          context,
+                          _itemNameController,
+                          'Item Name',
+                          (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'you SHOULD NOT  MAKE it empty';
+                            }
+                            return null;
+                          },
+                        ),
+                        TextFieldsTheme.createTextField(
+                          context,
+                          _priceController,
+                          'Price',
+                          (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter a price';
+                            }
+                            if (double.tryParse(value) == null) {
+                              return 'Please enter a valid number';
+                            }
+                            return null;
+                          },
+                        ),
+
+                        TextFieldsTheme.createTextField(
+                          context,
+                          _unitController,
+                          'Units',
+                          (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter the number of units';
+                            }
+                            if (int.tryParse(value) == null) {
+                              return 'Please enter a valid number';
+                            }
+                            return null;
+                          },
+                        ),
+
+                        const SizedBox(height: 10),
+                        ElevatedButton(
+                          onPressed: () {
+                            final name = _itemNameController.text.trim();
+                            final price =
+                                double.tryParse(_priceController.text) ?? 0.0;
+                            final units =
+                                int.tryParse(_unitController.text) ?? 1;
+                            if (_formKey.currentState!.validate()) {
+                              _itemNameController.clear();
+                              _priceController.clear();
+                              _unitController.clear();
+                              Navigator.pop(context);
+                              context.read<IngredientsItemsBloc>().add(
+                                AddIngredientsItemsEvents(
+                                  ingredientname: name,
+                                  ingredientModels:
+                                      _selectedIngredient!.key as int,
+                                  price: price,
+                                  materialsUnit: units,
+                                ),
+                              );
+                            }
+                          },
+                          child: const Text('Add Item'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+        },
+        label: const Text('Add Ingredient Item'),
+        icon: const Icon(Icons.add),
       ),
     );
   }

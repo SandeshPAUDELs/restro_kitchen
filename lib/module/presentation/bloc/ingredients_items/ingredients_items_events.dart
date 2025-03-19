@@ -13,7 +13,15 @@ class AddIngredientsItemsEvents extends IngredientsItemsEvents {
   final double price;
   final int materialsUnit;
   const AddIngredientsItemsEvents({required this.ingredientname, required this.ingredientModels, required this.price, required this.materialsUnit});
-
   @override
   List<Object> get props => [ingredientname, ingredientModels, price, materialsUnit];
+}
+
+class LoadIngredientItemsByIngredientEvent extends IngredientsItemsEvents {
+  final int ingredientKey;
+
+  const LoadIngredientItemsByIngredientEvent({required this.ingredientKey});
+
+  @override
+  List<Object> get props => [ingredientKey];
 }
