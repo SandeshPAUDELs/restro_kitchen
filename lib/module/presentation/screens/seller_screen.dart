@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hive_project/common/widgets/containers_within_screens.dart';
+import 'package:hive_project/core/config/themes/colors.dart';
 import 'package:hive_project/core/config/themes/custom_theme/app_bar_theme.dart';
 import 'package:hive_project/core/config/themes/custom_theme/text_field_theme.dart';
 import 'package:hive_project/module/data/models/ingredients/ingredients_models.dart';
@@ -9,14 +10,14 @@ import 'package:hive_project/module/presentation/bloc/ingredients_items/ingredie
 import 'package:hive_project/module/presentation/bloc/ingredients_items/ingredients_items_events.dart';
 import 'package:hive_project/module/presentation/bloc/ingredients_items/ingredients_items_state.dart';
 
-class IngredientItemsScreen extends StatefulWidget {
-  const IngredientItemsScreen({super.key});
+class SellerScreen extends StatefulWidget {
+  const SellerScreen({super.key});
 
   @override
-  _IngredientItemsScreenState createState() => _IngredientItemsScreenState();
+  _SellerScreenState createState() => _SellerScreenState();
 }
 
-class _IngredientItemsScreenState extends State<IngredientItemsScreen> {
+class _SellerScreenState extends State<SellerScreen> {
   final TextEditingController _itemNameController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _unitController = TextEditingController();
@@ -34,6 +35,7 @@ class _IngredientItemsScreenState extends State<IngredientItemsScreen> {
     final Box<IngredientModels> ingredientBox = Hive.box<IngredientModels>(
       'ingredientBox',
     );
+    final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
       appBar: CustomeAppBarTheme.appBarThemewithNavigation(
@@ -42,11 +44,12 @@ class _IngredientItemsScreenState extends State<IngredientItemsScreen> {
       ),
       body: Column(
         children: [
-          ContainersWithinScreens.createheadinginSeller(
+          ContainersWithinScreens.creatingheadingThreeColumns(
             context,
             'Item Name',
             'Price',
             'Units',
+            AppColors.containerColor,
           ),
 
           Expanded(
@@ -57,13 +60,26 @@ class _IngredientItemsScreenState extends State<IngredientItemsScreen> {
                     itemCount: state.ingredientItems.length,
                     itemBuilder: (context, index) {
                       final item = state.ingredientItems[index];
-                      return ContainersWithinScreens.createTableBodyforSeller(
+                      return ContainersWithinScreens.createTableBodyThreeColumns(
                         context,
                         item.ingredientname,
                         item.price.toString(),
                         item.materialsUnit.toString(),
+                        Row(
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.minimize),
+                              onPressed: () {},
+                            ),
+                            Text(
+                              item.materialsUnit.toString(),
+                              maxLines: 1,
+                              style: textTheme.titleSmall,
+                            ),
+                            IconButton(icon: Icon(Icons.add), onPressed: () {}),
+                          ],
+                        ),
                       );
-                      
                     },
                   );
                 }

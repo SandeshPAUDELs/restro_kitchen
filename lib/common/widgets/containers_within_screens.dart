@@ -19,30 +19,31 @@ class ContainersWithinScreens {
     );
   }
 
-  static Container createheadinginSeller(
+  static Container creatingheadingThreeColumns(
     BuildContext context,
     String heading1,
     String heading2,
     String heading3,
+    Color color,
   ) {
     final textTheme = TextThemes.createTextTheme(context);
     final width = MediaQuery.of(context).size.width;
     return Container(
-      color: AppColors.containerColor,
+      color: color,
       padding: EdgeInsets.all(CommonStyle.screenpadding),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SizedBox(
-            width: width * 0.12,
+            width: width * 0.11,
             child: Text(heading1, maxLines: 2, style: textTheme.titleSmall),
           ),
           SizedBox(
-            width: width * 0.12,
+            width: width * 0.11,
             child: Text(heading2, maxLines: 2, style: textTheme.titleSmall),
           ),
           SizedBox(
-            width: width * 0.15,
+            width: width * 0.12,
             child: Text(heading3, maxLines: 2, style: textTheme.titleSmall),
           ),
         ],
@@ -50,11 +51,12 @@ class ContainersWithinScreens {
     );
   }
 
-  static Container createTableBodyforSeller(
+  static Container createTableBodyThreeColumns(
     BuildContext context,
     String items,
     String items2,
     String items3,
+    Widget child,
   ) {
     final textTheme = TextThemes.createTextTheme(context);
     final width = MediaQuery.of(context).size.width;
@@ -66,23 +68,14 @@ class ContainersWithinScreens {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SizedBox(
-            width: width * 0.12,
+            width: width * 0.11,
             child: Text(items, maxLines: 2, style: textTheme.titleSmall),
           ),
           SizedBox(
-            width: width * 0.12,
+            width: width * 0.11,
             child: Text(items2, maxLines: 2, style: textTheme.titleSmall),
           ),
-          SizedBox(
-            width: width * 0.15,
-            child: Row(
-              children: [
-                IconButton(icon: Icon(Icons.minimize), onPressed: () {}),
-                Text(items3, maxLines: 2, style: textTheme.titleSmall),
-                IconButton(icon: Icon(Icons.add), onPressed: () {}),
-              ],
-            ),
-          ),
+          SizedBox(width: width * 0.12, child: child),
         ],
       ),
     );
@@ -93,12 +86,14 @@ class ContainersWithinScreens {
     String heading1,
     String heading2,
     String heaing3,
-    String heading4,
+    // String heading4,
+    Widget child,
+    Color color,
   ) {
     final textTheme = TextThemes.createTextTheme(context);
     final width = MediaQuery.of(context).size.width;
     return Container(
-      color: AppColors.containerColor,
+      color: color,
       padding: EdgeInsets.all(CommonStyle.screenpadding),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -117,58 +112,100 @@ class ContainersWithinScreens {
           ),
           SizedBox(
             width: width * 0.1,
-            child: Text(heading4, maxLines: 2, style: textTheme.titleSmall),
+            child: child,
           ),
         ],
       ),
     );
   }
 
-  static Container createTableBodyforMarket(
+  static Container createHeadingforIntermediateItems(
     BuildContext context,
-    String items,
-    String items2,
+    String items1,
+    String item2,
     String items3,
-    String items4,
+    String item4,
+    Widget child,
+    Widget child2,
+    Color color,
   ) {
     final textTheme = TextThemes.createTextTheme(context);
     final width = MediaQuery.of(context).size.width;
-
     return Container(
-      color: AppColors.surfaceColor,
+      color: color,
+
       padding: EdgeInsets.all(CommonStyle.screenpadding),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SizedBox(
-            width: width * 0.1,
-            child: Text(items, maxLines: 2, style: textTheme.titleSmall),
+            width: width * 0.13,
+            child: Text(items1, maxLines: 2, style: textTheme.titleSmall),
           ),
           SizedBox(
-            width: width * 0.1,
-            child: Text(items2, maxLines: 2, style: textTheme.titleSmall),
+            width: width * 0.13,
+            child: Text(item2, maxLines: 2, style: textTheme.titleSmall),
           ),
           SizedBox(
-            width: width * 0.12,
-            child: Row(
+            width: width * 0.13,
+            child: Text(items3, maxLines: 2, style: textTheme.titleSmall),
+          ),
+          SizedBox(
+            width: width * 0.13,
+            child: Text(item4, maxLines: 2, style: textTheme.titleSmall),
+          ),
+          SizedBox(width: width * 0.15, child: child),
+          SizedBox(width: width * 0.14, child: child2),
+        ],
+      ),
+    );
+  }
+
+  static Container createAlertDialogWhenPrepareButtonPressed(
+    BuildContext context,
+    String itemName,
+    double price,
+    Widget child,
+    String materials,
+    int quantity,
+  ) {
+    final textTheme = TextThemes.createTextTheme(context);
+    final width = MediaQuery.of(context).size.width;
+    return Container(
+      color: AppColors.actionBtnColor,
+      width: width * 0.92,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: CommonStyle.largePadding,
+          vertical: CommonStyle.contanersPadding,
+        ),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                IconButton(icon: Icon(Icons.minimize), onPressed: () {}),
-                Text('1', style: textTheme.titleSmall),
-                IconButton(icon: Icon(Icons.add), onPressed: () {}),
+                Text(itemName, style: textTheme.titleSmall),
+                Text('Rs$price/-', style: textTheme.titleSmall),
+                Row(
+                  children: [
+                    IconButton(icon: Icon(Icons.minimize), onPressed: () {}),
+                    Text('$quantity', style: textTheme.bodyMedium),
+                    IconButton(icon: Icon(Icons.add), onPressed: () {}),
+                  ],
+                ),
+
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.buttonColor,
+                  ),
+                  onPressed: () {},
+                  child: Text('prepare', style: textTheme.bodyMedium),
+                ),
               ],
             ),
-          ),
-          SizedBox(
-            width: width * 0.1,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.buttonColor,
-              ),
-              onPressed: () {},
-              child: Text(items4, style: textTheme.bodyMedium),
-            ),
-          ),
-        ],
+            child,
+          ],
+        ),
       ),
     );
   }

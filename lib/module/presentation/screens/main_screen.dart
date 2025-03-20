@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_project/core/config/routes/routes_name.dart';
 import 'package:hive_project/core/config/themes/custom_theme/text_field_theme.dart';
 import 'package:hive_project/module/presentation/bloc/ingredients/ingredients_bloc.dart';
 import 'package:hive_project/module/presentation/bloc/ingredients/ingredients_events.dart';
 import 'package:hive_project/module/presentation/bloc/ingredients/ingredients_state.dart';
-import 'package:hive_project/module/presentation/screens/seller_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -21,14 +21,14 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(title: const Text('Ingredients')),
       body: Column(
         children: [
+          
           ElevatedButton(
-            onPressed: () => Navigator.push(
+            onPressed: () => Navigator.pushNamed(
               context,
-              MaterialPageRoute(builder: (context) => IngredientItemsScreen()),
+              AppRoutesName.sellerScreen,
             ),
             child: const Text('Add Ingredient Item'),
             ),
-
           Expanded(
             child: BlocBuilder<IngredientsBloc, IngredientsState>(
               builder: (context, state) {

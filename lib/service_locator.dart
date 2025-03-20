@@ -24,6 +24,8 @@ Future<void> injection() async {
   // boxes
   await Hive.openBox<IngredientModels>('ingredientBox');
   await Hive.openBox<IngredientsItemModels>('ingredientItemBox');
+
+
   // datasources
   getIt.registerLazySingleton<IngredientsDataSource>(
     () => IngredientsDataSourceImpl(

@@ -6,14 +6,13 @@ import 'package:flutter/material.dart'
         Icon,
         IconButton,
         Icons,
-        MaterialPageRoute,
         Scaffold,
         Text,
         TextButton;
 import 'package:flutter/widgets.dart';
+import 'package:hive_project/core/config/routes/routes_name.dart';
 import 'package:hive_project/core/config/themes/colors.dart';
 import 'package:hive_project/core/config/themes/custom_theme/text_theme.dart';
-import 'package:hive_project/module/presentation/screens/market/market_screen.dart';
 
 class CustomeAppBarTheme {
   static AppBar appBarThemeforPages(BuildContext context, String titleText) {
@@ -48,13 +47,19 @@ class CustomeAppBarTheme {
       ),
       actions: [
         TextButton(
+          style: TextButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+              side: BorderSide(color: AppColors.containerColor2),
+            ),
+          ),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => MarketScreen()),
-            );
+            Navigator.pushNamed(context, AppRoutesName.marketScreen);
           },
-          child: Text('Kitchen Section'),
+          child: Text(
+            'Kitchen Section',
+            style: TextThemes.createTextTheme(context).bodyMedium,
+          ),
         ),
       ],
     );
