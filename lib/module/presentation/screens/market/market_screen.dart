@@ -209,9 +209,11 @@ class _MarketScreenState extends State<MarketScreen> {
                                                         .contanersPadding,
                                               ),
                                             ),
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              
+                                            },
                                             child: Text(
-                                              'Prepare',
+                                              'Buy',
                                               style: textTheme.bodyMedium,
                                             ),
                                           ),

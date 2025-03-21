@@ -110,10 +110,7 @@ class ContainersWithinScreens {
             width: width * 0.1,
             child: Text(heaing3, maxLines: 2, style: textTheme.titleSmall),
           ),
-          SizedBox(
-            width: width * 0.1,
-            child: child,
-          ),
+          SizedBox(width: width * 0.1, child: child),
         ],
       ),
     );
@@ -157,55 +154,6 @@ class ContainersWithinScreens {
           SizedBox(width: width * 0.15, child: child),
           SizedBox(width: width * 0.14, child: child2),
         ],
-      ),
-    );
-  }
-
-  static Container createAlertDialogWhenPrepareButtonPressed(
-    BuildContext context,
-    String itemName,
-    double price,
-    Widget child,
-    String materials,
-    int quantity,
-  ) {
-    final textTheme = TextThemes.createTextTheme(context);
-    final width = MediaQuery.of(context).size.width;
-    return Container(
-      color: AppColors.actionBtnColor,
-      width: width * 0.92,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: CommonStyle.largePadding,
-          vertical: CommonStyle.contanersPadding,
-        ),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(itemName, style: textTheme.titleSmall),
-                Text('Rs$price/-', style: textTheme.titleSmall),
-                Row(
-                  children: [
-                    IconButton(icon: Icon(Icons.minimize), onPressed: () {}),
-                    Text('$quantity', style: textTheme.bodyMedium),
-                    IconButton(icon: Icon(Icons.add), onPressed: () {}),
-                  ],
-                ),
-
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.buttonColor,
-                  ),
-                  onPressed: () {},
-                  child: Text('prepare', style: textTheme.bodyMedium),
-                ),
-              ],
-            ),
-            child,
-          ],
-        ),
       ),
     );
   }

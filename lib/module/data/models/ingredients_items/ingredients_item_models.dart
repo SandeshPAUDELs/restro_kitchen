@@ -7,7 +7,6 @@ class IngredientsItemModels extends HiveObject {
   String ingredientname;
   @HiveField(1)
   int ingredientModels;
-  // IngredientModels ingredientModels;
   @HiveField(2)
   double price;
   @HiveField(3)

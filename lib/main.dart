@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_project/core/config/routes/routes_name.dart';
 import 'package:hive_project/module/presentation/bloc/ingredients/ingredients_bloc.dart';
 import 'package:hive_project/module/presentation/bloc/ingredients_items/ingredients_items_bloc.dart';
+import 'package:hive_project/module/presentation/bloc/intermediate_items/intermediate_items_bloc.dart';
 import 'package:hive_project/module/presentation/screens/kitchen/food_prepared/prepared_food.dart';
 import 'package:hive_project/module/presentation/screens/kitchen/intermediate_items/intermediate_items.dart';
 import 'package:hive_project/module/presentation/screens/main_screen.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => IngredientsBloc(getIt())),
         BlocProvider(create: (context) => IngredientsItemsBloc(getIt())),
+        BlocProvider(create: (context) => IntermediateItemsBloc(getIt())),
       ],
       child: MaterialApp(
         title: 'Hive Project',

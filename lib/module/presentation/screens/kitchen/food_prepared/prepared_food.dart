@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_project/common/style/common_style.dart';
+import 'package:hive_project/common/widgets/alertboxes/alert_dialogs.dart';
 import 'package:hive_project/common/widgets/containers_within_screens.dart';
 import 'package:hive_project/core/config/themes/colors.dart';
 import 'package:hive_project/core/config/themes/custom_theme/text_theme.dart';
@@ -116,14 +117,26 @@ class PreparedFoodItemsScreen extends StatelessWidget {
                                             CommonStyle.contanersPadding,
                                       ),
                                     ),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return Dialog(
+                                            child:
+                                                AlertDialogsforScreens.createAlertDialogforSuccess(
+                                                  context,
+                                                  'Revenue Added successfully',
+                                                ),
+                                          );
+                                        },
+                                      );
+                                    },
                                     child: Text(
-                                      'Prepare',
-
+                                      'Serve',
                                       style: textTheme.bodyMedium,
                                     ),
                                   ),
-                                  // 'Serve',
+
                                   AppColors.surfaceColor,
                                 );
                               },
