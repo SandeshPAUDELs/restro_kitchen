@@ -16,5 +16,19 @@ class IngredientsItemsRepoImpl extends IngredientsItemsRepo{
   Future<void> addIngredientItems(String ingredientname, int ingredientModels, double ingredientPrice, int materialsUnit) {
     return dataSource.addIngredientItems(ingredientname, ingredientModels, ingredientPrice, materialsUnit);
   }
+// increment decrement ko
+   @override
+  void updateIngredientItem(String ingredientName, int newMaterialsUnit, double newPrice) {
+    final ingredientsItems = dataSource.getIngredientsItems();
+    
+    for (var item in ingredientsItems) {
+      if (item.ingredientname == ingredientName) {
+        item.materialsUnit = newMaterialsUnit;
+        item.price = newPrice;
+        item.save();  
+        break;
+      }
+    }
+  }
   
 }

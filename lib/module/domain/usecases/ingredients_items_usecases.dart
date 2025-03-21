@@ -11,5 +11,8 @@ class IngredientsItemsUsecases {
   Future<void> addIngredientItems(String ingredientname, int ingredientModels, double ingredientPrice, int materialsUnit) {
     return ingredientItems.addIngredientItems(ingredientname, ingredientModels, ingredientPrice, materialsUnit);
   }
-  
+  // increment decrement
+    void updateIngredientItem(String ingredientName, int newMaterialsUnit, double newPrice) {
+    ingredientItems.updateIngredientItem(ingredientName, newMaterialsUnit, newPrice);
+  }
 }

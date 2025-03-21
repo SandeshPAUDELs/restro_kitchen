@@ -65,20 +65,37 @@ class _SellerScreenState extends State<SellerScreen> {
                         item.ingredientname,
                         item.price.toString(),
                         item.materialsUnit.toString(),
-                        Row(
+                        
+                      Row(
                           children: [
                             IconButton(
-                              icon: Icon(Icons.minimize),
-                              onPressed: () {},
+                              icon: Icon(Icons.remove),
+                              onPressed: () {
+                                context.read<IngredientsItemsBloc>().add(
+                                  DecrementMaterialsUnitEvent(
+                                    ingredientName: item.ingredientname,
+                                  ),
+                                );
+                              },
                             ),
                             Text(
                               item.materialsUnit.toString(),
                               maxLines: 1,
                               style: textTheme.titleSmall,
                             ),
-                            IconButton(icon: Icon(Icons.add), onPressed: () {}),
+                            IconButton(
+                              icon: Icon(Icons.add),
+                              onPressed: () {
+                                context.read<IngredientsItemsBloc>().add(
+                                  IncrementMaterialsUnitEvent(
+                                    ingredientName: item.ingredientname,
+                                  ),
+                                );
+                              },
+                            ),
                           ],
                         ),
+                      
                       );
                     },
                   );
