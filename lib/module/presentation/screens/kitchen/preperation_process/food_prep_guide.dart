@@ -4,14 +4,33 @@ import 'package:hive_project/common/widgets/alertboxes/alert_dialogs.dart';
 import 'package:hive_project/common/widgets/containers_within_screens.dart';
 import 'package:hive_project/core/config/themes/colors.dart';
 import 'package:hive_project/core/config/themes/custom_theme/text_theme.dart';
+import 'package:hive_project/module/domain/entities/food/food_entities.dart';
 import 'package:hive_project/module/presentation/widget/navigation_widget.dart';
 
-class PreparedFoodItemsScreen extends StatelessWidget {
-  
-  const PreparedFoodItemsScreen({super.key});
+class FoodDetailsScreen extends StatelessWidget {
+  final FoodEntities food;
+
+  const FoodDetailsScreen({Key? key, required this.food}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // return Scaffold(
+    //   appBar: AppBar(title: Text(food.foodName)),
+    //   body: Padding(
+    //     padding: const EdgeInsets.all(16.0),
+    //     child: Column(
+    //       crossAxisAlignment: CrossAxisAlignment.start,
+    //       children: [
+    //         Text("Ingredients:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+    //         SizedBox(height: 10),
+    //         ...food.otherRequiredFoodEntities.map((e) => ListTile(
+    //           title: Text(e.itemName),
+    //           subtitle: Text("Quantity: ${e.quantity}"),
+    //         )),
+    //       ],
+    //     ),
+    //   ),
+    // );
     final textTheme = TextThemes.createTextTheme(context);
     return Scaffold(
       body: SingleChildScrollView(
@@ -35,7 +54,7 @@ class PreparedFoodItemsScreen extends StatelessWidget {
                             color: AppColors.containerColor3,
                             padding: const EdgeInsets.all(8),
                             child: Text(
-                              'Chapati',
+                              food.foodName,
                               maxLines: 1,
                               textAlign: TextAlign.center,
                               style: textTheme.headlineSmall!.copyWith(
@@ -58,19 +77,15 @@ class PreparedFoodItemsScreen extends StatelessWidget {
                                     'Quantity ',
                                     AppColors.containerColor,
                                   ),
-                                  ListView.builder(
-                                    shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    itemCount: 5,
-                                    itemBuilder: (context, index) {
-                                      return ContainersWithinScreens.creatingheadingThreeColumns(
-                                        context,
-                                        'heading1',
-                                        'heading2',
-                                        'heading3',
-                                        AppColors.surfaceColor,
-                                      );
-                                    },
+                                  ...food.otherRequiredFoodEntities.map(
+                                    (e) =>
+                                        ContainersWithinScreens.creatingheadingThreeColumns(
+                                          context,
+                                          e.itemName,
+                                          'Price',
+                                          e.quantity.toString(),
+                                          AppColors.surfaceColor,
+                                        ),
                                   ),
                                 ],
                               ),
@@ -94,55 +109,40 @@ class PreparedFoodItemsScreen extends StatelessWidget {
                           AppColors.containerColor,
                         ),
 
-                        Expanded(
-                          child: SingleChildScrollView(
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemCount: 6,
-                              itemBuilder: (context, index) {
-                                return ContainersWithinScreens.createheadingforMarket(
-                                  context,
-                                  'Ingredient Name',
-                                  'Price',
-                                  'Units',
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: AppColors.buttonColor,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      padding: EdgeInsets.symmetric(
-                                        vertical: CommonStyle.contanersPadding,
-                                        horizontal:
-                                            CommonStyle.contanersPadding,
-                                      ),
-                                    ),
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return Dialog(
-                                            child:
-                                                AlertDialogsforScreens.createAlertDialogforSuccess(
-                                                  context,
-                                                  'Revenue Added successfully',
-                                                ),
-                                          );
-                                        },
-                                      );
-                                    },
-                                    child: Text(
-                                      'Serve',
-                                      style: textTheme.bodyMedium,
-                                    ),
-                                  ),
-
-                                  AppColors.surfaceColor,
-                                );
-                              },
+                        ContainersWithinScreens.createheadingforMarket(
+                          context,
+                          food.foodName,
+                          'Price',
+                          'Units',
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.buttonColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                vertical: CommonStyle.contanersPadding,
+                                horizontal: CommonStyle.contanersPadding,
+                              ),
                             ),
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return Dialog(
+                                    child:
+                                        AlertDialogsforScreens.createAlertDialogforSuccess(
+                                          context,
+                                          'Revenue Added successfully',
+                                        ),
+                                  );
+                                },
+                              );
+                            },
+                            child: Text('Serve', style: textTheme.bodyMedium),
                           ),
+
+                          AppColors.surfaceColor,
                         ),
                       ],
                     ),

@@ -4,6 +4,7 @@ import 'package:hive_project/module/data/models/ingredients/ingredients_models.d
 abstract class IngredientsDataSource {
   Future<void> addIngredient(String name);
   List<IngredientModels> getIngredients();
+  
 }
 class IngredientsDataSourceImpl extends IngredientsDataSource {
   final Box<IngredientModels> ingredientBox;

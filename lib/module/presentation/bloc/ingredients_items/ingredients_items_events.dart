@@ -38,7 +38,7 @@ class LoadIngredientItemsByIngredientEvent extends IngredientsItemsEvents {
   List<Object> get props => [ingredientKey];
 }
 
-/// increment by 1
+// increment by 1
 class IncrementMaterialsUnitEvent extends IngredientsItemsEvents {
   final String ingredientName;
 

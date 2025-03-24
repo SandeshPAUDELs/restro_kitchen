@@ -4,7 +4,6 @@ import 'package:hive_project/module/data/models/intermediate_items/intermediate_
 abstract class IntermediateItemsDataSource {
   Future<void> addIntermediateItem(String intermediateItemName, int ingredientsItemModels, int availableQuantity, int requiredQuantity, int servingQuantity);
   List<IntermediateItemsModels> getIntermediateItems();
-
 }
 class IntermediateItemsDataSourceImpl extends IntermediateItemsDataSource {
   final Box<IntermediateItemsModels> intermediateItemsBox;

@@ -155,16 +155,40 @@ class IntermediateItems extends StatelessWidget {
                                 itemCount: state.intermediateItems.length,
                                 itemBuilder: (context, index) {
                                   final item = state.intermediateItems[index];
+                                  final ingredientBox =
+                                      Hive.box<IngredientsItemModels>(
+                                        'ingredientItemBox',
+                                      );
+                                  final ingredientModel = ingredientBox.get(
+                                    item.ingredientsItemModels,
+                                  );
+                                  final ingredientName =
+                                      ingredientModel?.ingredientname ??
+                                      'Unknown';
                                   return ContainersWithinScreens.createHeadingforIntermediateItems(
                                     context,
                                     item.intermediateItemName,
-                                    item.ingredientsItemModels.toString(),
+                                    ingredientName,
                                     item.availableQuantity.toString(),
                                     item.requiredQuantity.toString(),
                                     Row(
                                       children: [
                                         IconButton(
-                                          onPressed: () {},
+                                          onPressed:
+                                              item.availableQuantity >=
+                                                      item.requiredQuantity
+                                                  ? () {
+                                                    context
+                                                        .read<
+                                                          IntermediateItemsBloc
+                                                        >()
+                                                        .add(
+                                                          IncrementServingQuantityEvent(
+                                                            index: index,
+                                                          ),
+                                                        );
+                                                  }
+                                                  : null,
                                           icon: Icon(Icons.add),
                                         ),
                                         Text(
@@ -172,8 +196,21 @@ class IntermediateItems extends StatelessWidget {
                                           style: textTheme.titleSmall,
                                         ),
                                         IconButton(
+                                          onPressed:
+                                              item.servingQuantity > 1
+                                                  ? () {
+                                                    context
+                                                        .read<
+                                                          IntermediateItemsBloc
+                                                        >()
+                                                        .add(
+                                                          DecrementServingQuantityEvent(
+                                                            index: index,
+                                                          ),
+                                                        );
+                                                  }
+                                                  : null,
                                           icon: Icon(Icons.remove),
-                                          onPressed: () {},
                                         ),
                                       ],
                                     ),
@@ -192,7 +229,22 @@ class IntermediateItems extends StatelessWidget {
                                               CommonStyle.contanersPadding,
                                         ),
                                       ),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        if (item.requiredQuantity <=
+                                            item.availableQuantity) {
+                                          _alertdialog();
+                                        } else {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                'You can\'t prepare food since the required materials are not available.',
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                      },
                                       child: Text(
                                         'Prepare',
                                         style: textTheme.bodyMedium,
@@ -203,7 +255,6 @@ class IntermediateItems extends StatelessWidget {
                                 },
                               );
                             }
-
                             return const Center(child: Text('No items added.'));
                           },
                         ),

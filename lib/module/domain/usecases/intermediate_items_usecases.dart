@@ -11,4 +11,8 @@ class IntermediateItemsUsecases {
   Future<void> addIntermediateItem(String intermediateItemName, int ingredientsItemModels, int availableQuantity, int requiredQuantity, int servingQuantity) {
     return intermediateItems.addIntermediateItem(intermediateItemName, ingredientsItemModels, availableQuantity, requiredQuantity, servingQuantity);
   }   
+  // serving quantity increment and decrement
+  void updateIntermediateItem(String intermediateItemName, int newServingQuantity, int newRequiredQuantity) {
+    intermediateItems.updateIntermediateItem(intermediateItemName, newServingQuantity, newRequiredQuantity);
+  }
 }

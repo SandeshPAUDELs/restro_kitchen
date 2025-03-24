@@ -1,6 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:hive_project/module/data/models/intermediate_items/intermediate_item_models.dart';
-
 abstract class IntermediateItemsEvents extends Equatable {
   const IntermediateItemsEvents();
 
@@ -32,3 +30,31 @@ class AddIntermediateItemsEvents extends IntermediateItemsEvents {
   ];
 
 }
+
+class IncrementServingQuantityEvent extends IntermediateItemsEvents {
+  final int index;
+
+  const IncrementServingQuantityEvent({required this.index});
+
+  @override
+  List<Object> get props => [index];
+}
+
+class DecrementServingQuantityEvent extends IntermediateItemsEvents {
+  final int index;
+
+  const DecrementServingQuantityEvent({required this.index});
+
+  @override
+  List<Object> get props => [index];
+}
+
+class PrepareIntermediateItemEvent extends IntermediateItemsEvents {
+  final int index;
+
+  const PrepareIntermediateItemEvent({required this.index});
+
+  @override
+  List<Object> get props => [index];
+}
+

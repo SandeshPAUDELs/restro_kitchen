@@ -15,20 +15,18 @@ class HomeScreen extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<IngredientsBloc>().add(LoadIngredientsEvents());
     });
-   final _formKey = GlobalKey<FormState>();
+    final _formKey = GlobalKey<FormState>();
 
     return Scaffold(
       appBar: AppBar(title: const Text('Ingredients')),
       body: Column(
         children: [
-          
+
           ElevatedButton(
-            onPressed: () => Navigator.pushNamed(
-              context,
-              AppRoutesName.sellerScreen,
-            ),
+            onPressed:
+                () => Navigator.pushNamed(context, AppRoutesName.sellerScreen),
             child: const Text('Add Ingredient Item'),
-            ),
+          ),
           Expanded(
             child: BlocBuilder<IngredientsBloc, IngredientsState>(
               builder: (context, state) {
@@ -49,48 +47,50 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(onPressed: (){
-        showDialog(context: context, builder: (context) {
-          return AlertDialog(
-            title: Text('Add Ingredient'),
-            content: Form(
-              key: _formKey,
-              
-                    child: TextFieldsTheme.createTextField(
-                      context,
-                      _controller,
-                      'Add Ingredient',
-                      (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'you SHOULD NOT  MAKE it empty';
-                        }
-                        return null;
-                      },
-                    ),
-                  // ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    context.read<IngredientsBloc>().add(
-                      AddIngredientsEvents(name: _controller.text),
-                    );
-                    _controller.clear();
-                    Navigator.pop(context);
-                  }
-                },
-                child: Text('Add'),
-              ),
-            ],
-          );
-        });
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text('Add Ingredient'),
+                content: Form(
+                  key: _formKey,
 
-      }, label: Text('Add Ingredient'),
-      icon: Icon(Icons.add),
+                  child: TextFieldsTheme.createTextField(
+                    context,
+                    _controller,
+                    'Add Ingredient',
+                    (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'you SHOULD NOT  MAKE it empty';
+                      }
+                      return null;
+                    },
+                  ),
+                  // ),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        context.read<IngredientsBloc>().add(
+                          AddIngredientsEvents(name: _controller.text),
+                        );
+                        _controller.clear();
+                        Navigator.pop(context);
+                      }
+                    },
+                    child: Text('Add'),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+        label: Text('Add Ingredient'),
+        icon: Icon(Icons.add),
       ),
     );
-    
-
   }
 }
