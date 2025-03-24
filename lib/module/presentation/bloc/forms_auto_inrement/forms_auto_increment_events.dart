@@ -12,13 +12,15 @@ class UpdateAdditionalFormEvent extends FormsEvents {
   final int index;
   final String itemName;
   final double quantity;
+  final double price;
 
   const UpdateAdditionalFormEvent({
     required this.index,
     required this.itemName,
     required this.quantity,
+    required this.price,
   });
   @override
-  List<Object> get props => [index, itemName, quantity];
+  List<Object> get props => [index, itemName, quantity, price];
 }
 

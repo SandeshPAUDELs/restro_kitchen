@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_project/common/style/common_style.dart';
 import 'package:hive_project/core/config/routes/routes_name.dart';
+import 'package:hive_project/core/config/themes/colors.dart';
+import 'package:hive_project/core/config/themes/custom_theme/app_bar_theme.dart';
 import 'package:hive_project/core/config/themes/custom_theme/text_field_theme.dart';
 import 'package:hive_project/module/presentation/bloc/ingredients/ingredients_bloc.dart';
 import 'package:hive_project/module/presentation/bloc/ingredients/ingredients_events.dart';
@@ -18,14 +21,27 @@ class HomeScreen extends StatelessWidget {
     final _formKey = GlobalKey<FormState>();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Ingredients')),
+      backgroundColor: AppColors.surfaceColor,
+      appBar: CustomeAppBarTheme.appBarThemeforPages(
+        context,
+        'Ingredients Screen',
+      ),
       body: Column(
         children: [
-
           ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.actionBtnColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              padding: EdgeInsets.symmetric(
+                vertical: CommonStyle.contanersPadding,
+                horizontal: CommonStyle.contanersPadding,
+              ),
+            ),
             onPressed:
                 () => Navigator.pushNamed(context, AppRoutesName.sellerScreen),
-            child: const Text('Add Ingredient Item'),
+            child: const Text('Enter Into Market'),
           ),
           Expanded(
             child: BlocBuilder<IngredientsBloc, IngredientsState>(

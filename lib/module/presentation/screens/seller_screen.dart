@@ -38,73 +38,76 @@ class _SellerScreenState extends State<SellerScreen> {
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
+      backgroundColor: AppColors.surfaceColor,
       appBar: CustomeAppBarTheme.appBarThemewithNavigation(
         context,
         'Add Ingredient Item',
       ),
-      body: Column(
-        children: [
-          ContainersWithinScreens.creatingheadingThreeColumns(
-            context,
-            'Item Name',
-            'Price',
-            'Units',
-            AppColors.containerColor,
-          ),
-
-          Expanded(
-            child: BlocBuilder<IngredientsItemsBloc, IngredientsItemsState>(
-              builder: (context, state) {
-                if (state is IngredientsItemsLoadedState) {
-                  return ListView.builder(
-                    itemCount: state.ingredientItems.length,
-                    itemBuilder: (context, index) {
-                      final item = state.ingredientItems[index];
-                      return ContainersWithinScreens.createTableBodyThreeColumns(
-                        context,
-                        item.ingredientname,
-                        item.price.toString(),
-                        item.materialsUnit.toString(),
-                        
-                      Row(
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.remove),
-                              onPressed: () {
-                                context.read<IngredientsItemsBloc>().add(
-                                  DecrementMaterialsUnitEvent(
-                                    ingredientName: item.ingredientname,
-                                  ),
-                                );
-                              },
-                            ),
-                            Text(
-                              item.materialsUnit.toString(),
-                              maxLines: 1,
-                              style: textTheme.titleSmall,
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.add),
-                              onPressed: () {
-                                context.read<IngredientsItemsBloc>().add(
-                                  IncrementMaterialsUnitEvent(
-                                    ingredientName: item.ingredientname,
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                      
-                      );
-                    },
-                  );
-                }
-                return const Center(child: Text('No items added.'));
-              },
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+        child: Column(
+          children: [
+            ContainersWithinScreens.creatingheadingThreeColumns(
+              context,
+              'Item Name',
+              'Price',
+              'Units',
+              AppColors.containerColor,
             ),
-          ),
-        ],
+
+            Expanded(
+              child: BlocBuilder<IngredientsItemsBloc, IngredientsItemsState>(
+                builder: (context, state) {
+                  if (state is IngredientsItemsLoadedState) {
+                    return ListView.builder(
+                      itemCount: state.ingredientItems.length,
+                      itemBuilder: (context, index) {
+                        final item = state.ingredientItems[index];
+                        return ContainersWithinScreens.createTableBodyThreeColumns(
+                          context,
+                          item.ingredientname,
+                          item.price.toString(),
+                          item.materialsUnit.toString(),
+
+                          Row(
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.remove),
+                                onPressed: () {
+                                  context.read<IngredientsItemsBloc>().add(
+                                    DecrementMaterialsUnitEvent(
+                                      ingredientName: item.ingredientname,
+                                    ),
+                                  );
+                                },
+                              ),
+                              Text(
+                                item.materialsUnit.toString(),
+                                maxLines: 1,
+                                style: textTheme.titleSmall,
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.add),
+                                onPressed: () {
+                                  context.read<IngredientsItemsBloc>().add(
+                                    IncrementMaterialsUnitEvent(
+                                      ingredientName: item.ingredientname,
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  }
+                  return const Center(child: Text('No items added.'));
+                },
+              ),
+            ),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {

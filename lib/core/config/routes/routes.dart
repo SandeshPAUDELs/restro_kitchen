@@ -5,6 +5,7 @@ import 'package:hive_project/module/presentation/screens/kitchen/intermediate_it
 import 'package:hive_project/module/presentation/screens/kitchen/preperation_process/food_prep_process.dart';
 import 'package:hive_project/module/presentation/screens/main_screen.dart';
 import 'package:hive_project/module/presentation/screens/market/market_screen.dart';
+import 'package:hive_project/module/presentation/screens/report/debit_credit_report.dart';
 import 'package:hive_project/module/presentation/screens/seller_screen.dart';
 
 class Routes {
@@ -26,8 +27,11 @@ class Routes {
         return MaterialPageRoute(
           builder: (content) => AddFoodScreen(),
         );
+      case AppRoutesName.reportScreen: 
+        return MaterialPageRoute(
+          builder: (content) => DebitCreditReport(),
+        );
 
-      
       default:
         return MaterialPageRoute(
           builder:

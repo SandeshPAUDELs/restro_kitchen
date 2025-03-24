@@ -61,17 +61,20 @@ class OtherRequiredFoodModelsAdapter
     return OtherRequiredFoodModels(
       itemName: fields[0] as String,
       quantity: fields[1] as double,
+      price: fields[2] as double,
     );
   }
 
   @override
   void write(BinaryWriter writer, OtherRequiredFoodModels obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.itemName)
       ..writeByte(1)
-      ..write(obj.quantity);
+      ..write(obj.quantity)
+      ..writeByte(2)
+      ..write(obj.price);
   }
 
   @override

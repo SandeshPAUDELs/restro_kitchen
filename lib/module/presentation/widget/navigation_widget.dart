@@ -13,6 +13,7 @@ class NavigationWidget extends StatelessWidget {
       {'title': 'Intermediate Items', 'route': AppRoutesName.intermediateItems},
       {'title': 'Prepared Food', 'route': AppRoutesName.preparedFood},
       {'title': 'Preperation Guide', 'route': AppRoutesName.preperationProcess},
+      {'title': 'Report Screen', 'route': AppRoutesName.reportScreen},
     ];
     return Container(
       height: 40,

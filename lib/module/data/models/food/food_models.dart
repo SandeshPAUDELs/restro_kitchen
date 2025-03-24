@@ -25,9 +25,12 @@ class OtherRequiredFoodModels extends HiveObject {
   String itemName;
   @HiveField(1)
   double quantity;
+  @HiveField(2)
+  double price;
 
   OtherRequiredFoodModels({
     required this.itemName,
     required this.quantity,
+    required this.price,
   });
 }

@@ -5,13 +5,13 @@ import 'package:hive_project/module/presentation/bloc/forms_auto_inrement/forms_
 
 class FormsBloc extends Bloc<FormsEvents, FormsState> {
   FormsBloc() : super(FormLoadedState([
-    OtherRequiredFoodEntities(itemName: '', quantity: 0),
+    OtherRequiredFoodEntities(itemName: '', quantity: 0, price: 0),
   ])) {
     on<AddnewFormEvent>((event, emit) {
       if (state is FormLoadedState) {
         final current = (state as FormLoadedState).forms;
         final updated = List<OtherRequiredFoodEntities>.from(current)
-          ..add(OtherRequiredFoodEntities(itemName: '', quantity: 0));
+          ..add(OtherRequiredFoodEntities(itemName: '', quantity: 0, price: 0));
         emit(FormLoadedState(updated));
       }
     });
@@ -23,6 +23,7 @@ class FormsBloc extends Bloc<FormsEvents, FormsState> {
         updated[event.index] = OtherRequiredFoodEntities(
           itemName: event.itemName,
           quantity: event.quantity,
+          price: event.price,
         );
         emit(FormLoadedState(updated));
       }

@@ -12,8 +12,10 @@ class FoodEntities {
 class OtherRequiredFoodEntities {
   String itemName;
   double quantity;
+  double price;
   OtherRequiredFoodEntities({
     required this.itemName,
     required this.quantity,
+    required this.price,
   });
 }

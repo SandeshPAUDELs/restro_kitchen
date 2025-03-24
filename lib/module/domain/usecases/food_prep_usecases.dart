@@ -15,7 +15,7 @@ class FoodPrepUsecases {
   Future<OtherRequiredFoodEntities> getOtherRequiredFoodItems() {
     return foodPrep.getOtherRequiredFoodItems();
   }
-  Future<void> addOtherRequiredFoodItems(String itemName, double quantity) {
-    return foodPrep.addOtherRequiredFoodItems(itemName, quantity);
+  Future<void> addOtherRequiredFoodItems(String itemName, double quantity, double price) {
+    return foodPrep.addOtherRequiredFoodItems(itemName, quantity, price);
   }
 }

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_project/common/style/common_style.dart';
+import 'package:hive_project/core/config/themes/colors.dart';
+import 'package:hive_project/core/config/themes/custom_theme/text_field_theme.dart';
 import 'package:hive_project/module/data/models/intermediate_items/intermediate_item_models.dart';
 import 'package:hive_project/module/presentation/bloc/food/food_items_bloc.dart';
 import 'package:hive_project/module/presentation/bloc/food/food_items_events.dart';
@@ -21,6 +24,7 @@ class _AddFoodDialogState extends State<AddFoodDialog> {
 
   List<TextEditingController> itemControllers = [];
   List<TextEditingController> qtyControllers = [];
+  List<TextEditingController> priceControllers = [];
 
   @override
   void initState() {
@@ -36,12 +40,17 @@ class _AddFoodDialogState extends State<AddFoodDialog> {
     for (var controller in qtyControllers) {
       controller.dispose();
     }
+    for (var controller in priceControllers) {
+      controller.dispose();
+    }
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final intermediateItemsBox = Hive.box<IntermediateItemsModels>("intermediateItemsBox");
+    final intermediateItemsBox = Hive.box<IntermediateItemsModels>(
+      "intermediateItemsBox",
+    );
 
     return Builder(
       builder: (context) {
@@ -57,34 +66,52 @@ class _AddFoodDialogState extends State<AddFoodDialog> {
                   for (var controller in qtyControllers) {
                     controller.dispose();
                   }
+                  for (var controller in priceControllers) {
+                    controller.dispose();
+                  }
 
                   itemControllers.clear();
                   qtyControllers.clear();
+                  priceControllers.clear();
 
                   for (var item in state.forms) {
-                    itemControllers.add(TextEditingController(text: item.itemName));
-                    qtyControllers.add(TextEditingController(text: item.quantity.toString()));
+                    itemControllers.add(
+                      TextEditingController(text: item.itemName),
+                    );
+                    qtyControllers.add(
+                      TextEditingController(text: item.quantity.toString()),
+                    );
+                    priceControllers.add(
+                      TextEditingController(text: item.price.toString()),
+                    );
                   }
                 }
 
                 return SingleChildScrollView(
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextField(
-                        controller: foodNameController,
-                        decoration: InputDecoration(labelText: "Food Name"),
+                      Text('Food Name'),
+                      TextFieldsTheme.createTextField(
+                        context,
+                        foodNameController,
+                        'Enter Food Name',
+                        (val) => null,
                       ),
+
+                      Text('Select Intermediate Item'),
                       DropdownButtonFormField<IntermediateItemsModels>(
                         decoration: InputDecoration(
                           labelText: 'Select IntermediateItem',
                           border: OutlineInputBorder(),
                         ),
-                        items: intermediateItemsBox.values.map((item) {
-                          return DropdownMenuItem(
-                            value: item,
-                            child: Text(item.intermediateItemName),
-                          );
-                        }).toList(),
+                        items:
+                            intermediateItemsBox.values.map((item) {
+                              return DropdownMenuItem(
+                                value: item,
+                                child: Text(item.intermediateItemName),
+                              );
+                            }).toList(),
                         onChanged: (value) {
                           selectedIntermediateItem = value;
                         },
@@ -94,49 +121,86 @@ class _AddFoodDialogState extends State<AddFoodDialog> {
                         final item = state.forms[i];
 
                         return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            TextField(
-                              controller: itemControllers[i], 
-                              decoration: InputDecoration(labelText: "Item"),
-                              onChanged: (val) {
+                            Text('Required Items'),
+                            TextFieldsTheme.createTextField(
+                              context,
+                              itemControllers[i],
+                              'Item',
+
+                              (val) {
                                 context.read<FormsBloc>().add(
                                   UpdateAdditionalFormEvent(
                                     index: i,
-                                    itemName: val,
+                                    itemName: val ?? '',
                                     quantity: item.quantity,
+                                    price: item.price,
                                   ),
                                 );
+                                return null;
                               },
                             ),
                             SizedBox(width: 8),
-                            
-                            TextField(
-                              controller: qtyControllers[i ],
-                              decoration: InputDecoration(labelText: "Qty"),
-                              keyboardType: TextInputType.number,
-                              onChanged: (val) {
-                                final parsed = double.tryParse(val) ?? 0;
+                            Text('Required Quantity'),
+                            TextFieldsTheme.createTextField(
+                              context,
+                              qtyControllers[i],
+                              'Qty',
+                              (val) {
+                                final parsed = double.tryParse(val ?? '') ?? 0;
                                 context.read<FormsBloc>().add(
-                                      UpdateAdditionalFormEvent(
-                                        index: i,
-                                        itemName: item.itemName,
-                                        quantity: parsed,
-                                      ),
-                                    );
+                                  UpdateAdditionalFormEvent(
+                                    index: i,
+                                    itemName: item.itemName,
+                                    quantity: parsed,
+                                    price: item.price,
+                                  ),
+                                );
+                                return null;
+                              },
+                            ),
+                            Text('Price'),
+                            TextFieldsTheme.createTextField(
+                              context,
+                              priceControllers[i],
+                              'Price',
+                              (val) {
+                                final parsed = double.tryParse(val ?? '') ?? 0;
+                                context.read<FormsBloc>().add(
+                                  UpdateAdditionalFormEvent(
+                                    index: i,
+                                    itemName: item.itemName,
+                                    quantity: item.quantity,
+                                    price: parsed,
+                                  ),
+                                );
+                                return null;
                               },
                             ),
                           ],
                         );
                       }),
-                      TextButton(
+                      SizedBox(height: 10),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          padding: EdgeInsets.symmetric(
+                            vertical: CommonStyle.contanersPadding,
+                            horizontal: CommonStyle.contanersPadding,
+                          ),
+                        ),
                         onPressed: () {
                           context.read<FormsBloc>().add(AddnewFormEvent());
                           setState(() {
                             itemControllers.add(TextEditingController());
                             qtyControllers.add(TextEditingController());
+                            priceControllers.add(TextEditingController());
                           });
                         },
-                        child: Text("+ Add Item"),
+                        child: Text("Add Other Items",),
                       ),
                     ],
                   ),
@@ -148,15 +212,26 @@ class _AddFoodDialogState extends State<AddFoodDialog> {
           ),
           actions: [
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.buttonColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding: EdgeInsets.symmetric(
+                  vertical: CommonStyle.contanersPadding,
+                  horizontal: CommonStyle.contanersPadding,
+                ),
+              ),
               onPressed: () {
                 final name = foodNameController.text;
                 final inter = selectedIntermediateItem;
                 final formsState = context.read<FormsBloc>().state;
 
                 if (formsState is FormLoadedState && inter != null) {
-                  final validItems = formsState.forms
-                      .where((f) => f.itemName.isNotEmpty && f.quantity > 0)
-                      .toList();
+                  final validItems =
+                      formsState.forms
+                          .where((f) => f.itemName.isNotEmpty && f.quantity > 0)
+                          .toList();
 
                   context.read<FoodPrepBloc>().add(
                     AddFoodPrepItemEvent(

@@ -10,6 +10,8 @@ import 'package:hive_project/module/presentation/bloc/ingredients/ingredients_st
 import 'package:hive_project/module/presentation/bloc/ingredients_items/ingredients_items_bloc.dart';
 import 'package:hive_project/module/presentation/bloc/ingredients_items/ingredients_items_events.dart';
 import 'package:hive_project/module/presentation/bloc/ingredients_items/ingredients_items_state.dart';
+import 'package:hive_project/module/presentation/bloc/report/credit_report/credit_report_bloc.dart';
+import 'package:hive_project/module/presentation/bloc/report/credit_report/credit_report_events.dart';
 import 'package:hive_project/module/presentation/widget/navigation_widget.dart';
 
 class MarketScreen extends StatefulWidget {
@@ -210,7 +212,17 @@ class _MarketScreenState extends State<MarketScreen> {
                                               ),
                                             ),
                                             onPressed: () {
-                                              
+                                              context
+                                                  .read<CreditReportBloc>()
+                                                  .add(
+                                                    AddCreditReportEvents(
+                                                      ingredient:
+                                                          item.ingredientname,
+                                                      price: item.price,
+                                                      materialUnit:
+                                                          item.materialsUnit.toDouble(),
+                                                    ),
+                                                  );
                                             },
                                             child: Text(
                                               'Buy',

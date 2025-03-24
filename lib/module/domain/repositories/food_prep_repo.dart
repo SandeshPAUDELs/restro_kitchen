@@ -7,5 +7,5 @@ abstract class FoodPrepRepo {
   Future<OtherRequiredFoodEntities> getOtherRequiredFoodItems();
   // Future<List<OtherRequiredFoodEntities>> getOtherRequiredFoodItems();
 
-  Future<void> addOtherRequiredFoodItems(String itemName, double quantity);
+  Future<void> addOtherRequiredFoodItems(String itemName, double quantity, double price);
 }

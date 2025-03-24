@@ -21,6 +21,7 @@ class FoodPrepRepoImpl implements FoodPrepRepo {
                       (model) => OtherRequiredFoodEntities(
                         itemName: model.itemName,
                         quantity: model.quantity,
+                        price: model.price,
                       ),
                     )
                     .toList(),
@@ -42,14 +43,15 @@ class FoodPrepRepoImpl implements FoodPrepRepo {
           .map((e) => OtherRequiredFoodModels(
                 itemName: e.itemName,
                 quantity: e.quantity,
+                price: e.price,
               ))
           .toList(),
     );
   }
 
   @override
-  Future<void> addOtherRequiredFoodItems(String itemName, double quantity) {
-    return dataSource.addOtherRequiredFoodItems(itemName, quantity);
+  Future<void> addOtherRequiredFoodItems(String itemName, double quantity, double price) {
+    return dataSource.addOtherRequiredFoodItems(itemName, quantity, price);
   }
 
   @override
@@ -62,6 +64,7 @@ Future<OtherRequiredFoodEntities> getOtherRequiredFoodItems() async {
   return OtherRequiredFoodEntities(
     itemName: e.itemName,
     quantity: e.quantity,
+    price: e.price,
   );
 }
 

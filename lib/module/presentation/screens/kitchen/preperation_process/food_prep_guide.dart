@@ -9,28 +9,20 @@ import 'package:hive_project/module/presentation/widget/navigation_widget.dart';
 
 class FoodDetailsScreen extends StatelessWidget {
   final FoodEntities food;
+  final String intermediateItemName;
+  final double requiredQuantity;
+  final int servingQuantity;
 
-  const FoodDetailsScreen({Key? key, required this.food}) : super(key: key);
+  const FoodDetailsScreen({
+    Key? key,
+    required this.food,
+    required this.intermediateItemName,
+    required this.requiredQuantity,
+    required this.servingQuantity,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // return Scaffold(
-    //   appBar: AppBar(title: Text(food.foodName)),
-    //   body: Padding(
-    //     padding: const EdgeInsets.all(16.0),
-    //     child: Column(
-    //       crossAxisAlignment: CrossAxisAlignment.start,
-    //       children: [
-    //         Text("Ingredients:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-    //         SizedBox(height: 10),
-    //         ...food.otherRequiredFoodEntities.map((e) => ListTile(
-    //           title: Text(e.itemName),
-    //           subtitle: Text("Quantity: ${e.quantity}"),
-    //         )),
-    //       ],
-    //     ),
-    //   ),
-    // );
     final textTheme = TextThemes.createTextTheme(context);
     return Scaffold(
       body: SingleChildScrollView(
@@ -82,10 +74,17 @@ class FoodDetailsScreen extends StatelessWidget {
                                         ContainersWithinScreens.creatingheadingThreeColumns(
                                           context,
                                           e.itemName,
-                                          'Price',
+                                          e.price.toString(),
                                           e.quantity.toString(),
                                           AppColors.surfaceColor,
                                         ),
+                                  ),
+                                  ContainersWithinScreens.creatingheadingThreeColumns(
+                                    context,
+                                    intermediateItemName,
+                                    'Price',
+                                    requiredQuantity.toString(),
+                                    AppColors.surfaceColor,
                                   ),
                                 ],
                               ),
@@ -103,8 +102,8 @@ class FoodDetailsScreen extends StatelessWidget {
                         ContainersWithinScreens.createheadingforMarket(
                           context,
                           'Ingredient Name',
-                          'Price',
-                          'Units',
+                          'IntermediateItems',
+                          'Prepared Quantity',
                           Text('Serve', style: textTheme.titleSmall),
                           AppColors.containerColor,
                         ),
@@ -112,8 +111,8 @@ class FoodDetailsScreen extends StatelessWidget {
                         ContainersWithinScreens.createheadingforMarket(
                           context,
                           food.foodName,
-                          'Price',
-                          'Units',
+                          intermediateItemName,
+                          servingQuantity.toString(),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.buttonColor,

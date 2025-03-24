@@ -7,11 +7,14 @@ import 'package:hive_project/module/presentation/bloc/forms_auto_inrement/forms_
 import 'package:hive_project/module/presentation/bloc/ingredients/ingredients_bloc.dart';
 import 'package:hive_project/module/presentation/bloc/ingredients_items/ingredients_items_bloc.dart';
 import 'package:hive_project/module/presentation/bloc/intermediate_items/intermediate_items_bloc.dart';
+import 'package:hive_project/module/presentation/bloc/report/credit_report/credit_report_bloc.dart';
+import 'package:hive_project/module/presentation/bloc/report/debit_report/debit_report_bloc.dart';
 import 'package:hive_project/module/presentation/screens/kitchen/food_prepared/prepared_food.dart';
 import 'package:hive_project/module/presentation/screens/kitchen/intermediate_items/intermediate_items.dart';
 import 'package:hive_project/module/presentation/screens/kitchen/preperation_process/food_prep_process.dart';
 import 'package:hive_project/module/presentation/screens/main_screen.dart';
 import 'package:hive_project/module/presentation/screens/market/market_screen.dart';
+import 'package:hive_project/module/presentation/screens/report/debit_credit_report.dart';
 import 'package:hive_project/module/presentation/screens/seller_screen.dart';
 import 'package:hive_project/service_locator.dart';
 
@@ -34,6 +37,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => IntermediateItemsBloc(getIt())),
         BlocProvider(create: (context) => FoodPrepBloc(getIt())),
         BlocProvider(create: (context) => FormsBloc()),
+        BlocProvider(create: (context) => CreditReportBloc(getIt())),
+        BlocProvider(create: (context) => DebitReportBloc(getIt())),
       ],
       child: MaterialApp(
         title: 'Hive Project',
@@ -46,6 +51,7 @@ class MyApp extends StatelessWidget {
           AppRoutesName.intermediateItems: (context) => IntermediateItems(),
           AppRoutesName.preparedFood: (context) =>  PreparedFoodItemsScreen(),
           AppRoutesName.preperationProcess: (context) =>  AddFoodScreen(),
+          AppRoutesName.reportScreen: (context) =>  DebitCreditReport(),
         },
         onUnknownRoute:
             (settings) => MaterialPageRoute(

@@ -4,7 +4,7 @@ import 'package:hive_project/module/data/models/food/food_models.dart';
 abstract class FoodPrepDataSource {
   Future<void> addFoodPrep(String foodName, int intermediateItemsModels, List<OtherRequiredFoodModels> otherRequiredFoodModels);
   List<FoodModels> getFoodPrep();
-  Future<void> addOtherRequiredFoodItems(String itemName, double quantity);
+  Future<void> addOtherRequiredFoodItems(String itemName, double quantity, double price);
   List<OtherRequiredFoodModels> getOtherRequiredFoodItems();
 }
 
@@ -24,9 +24,10 @@ class FoodPrepDataSourceImpl extends FoodPrepDataSource {
   }
 
   @override
-  Future<void> addOtherRequiredFoodItems(String itemName, double quantity) async {
-    await otherRequiredFoodBox.add(OtherRequiredFoodModels(itemName: itemName, quantity: quantity));
+  Future<void> addOtherRequiredFoodItems(String itemName, double quantity, double price) async {
+    await otherRequiredFoodBox.add(OtherRequiredFoodModels(itemName: itemName, quantity: quantity, price: price));
   }
+
 
   @override
   List<OtherRequiredFoodModels> getOtherRequiredFoodItems() {

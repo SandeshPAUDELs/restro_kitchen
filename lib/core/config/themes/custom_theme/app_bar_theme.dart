@@ -1,14 +1,5 @@
 import 'package:flutter/material.dart'
-    show
-        AppBar,
-        BuildContext,
-        Builder,
-        Icon,
-        IconButton,
-        Icons,
-        Scaffold,
-        Text,
-        TextButton;
+    show AppBar, BuildContext, Text, TextButton;
 import 'package:flutter/widgets.dart';
 import 'package:hive_project/core/config/routes/routes_name.dart';
 import 'package:hive_project/core/config/themes/colors.dart';
@@ -21,16 +12,6 @@ class CustomeAppBarTheme {
       title: Text(
         titleText,
         style: TextThemes.createTextTheme(context).headlineSmall,
-      ),
-      leading: Builder(
-        builder: (context) {
-          return IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
-          );
-        },
       ),
     );
   }
