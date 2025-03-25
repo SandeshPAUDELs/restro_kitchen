@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:hive_project/common/style/common_style.dart';
 import 'package:hive_project/common/widgets/alertboxes/alert_dialogs.dart';
 import 'package:hive_project/common/widgets/containers_within_screens.dart';
 import 'package:hive_project/core/config/themes/colors.dart';
 import 'package:hive_project/core/config/themes/custom_theme/text_theme.dart';
+import 'package:hive_project/module/data/models/intermediate_items/intermediate_item_models.dart';
 import 'package:hive_project/module/domain/entities/food/food_entities.dart';
+import 'package:hive_project/module/presentation/bloc/intermediate_items/intermediate_items_bloc.dart';
+import 'package:hive_project/module/presentation/bloc/intermediate_items/intermediate_items_events.dart';
+import 'package:hive_project/module/presentation/bloc/report/debit_report/debit_report_bloc.dart';
+import 'package:hive_project/module/presentation/bloc/report/debit_report/debit_report_events.dart';
 import 'package:hive_project/module/presentation/widget/navigation_widget.dart';
 
 class FoodDetailsScreen extends StatelessWidget {
@@ -124,20 +131,72 @@ class FoodDetailsScreen extends StatelessWidget {
                                 horizontal: CommonStyle.contanersPadding,
                               ),
                             ),
+
                             onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return Dialog(
-                                    child:
-                                        AlertDialogsforScreens.createAlertDialogforSuccess(
-                                          context,
-                                          'Revenue Added successfully',
-                                        ),
+                              final intermediateItemBox =
+                                  Hive.box<IntermediateItemsModels>(
+                                    'intermediateItemsBox',
                                   );
-                                },
+
+                              final intermediateItem = intermediateItemBox.get(
+                                food.intermediateItemsModels,
                               );
+
+                              if (intermediateItem != null) {
+                                final currentAvailable =
+                                    intermediateItem.availableQuantity;
+                                final currentRequired =
+                                    intermediateItem.requiredQuantity;
+
+                                if (currentAvailable >= currentRequired) {
+                                  intermediateItem.availableQuantity =
+                                      currentAvailable - currentRequired;
+                                  intermediateItem.save();
+
+                                  context.read<DebitReportBloc>().add(
+                                    AddDebitReportEvents(
+                                      foodName: food.foodName,
+                                      servingQuantity:
+                                          intermediateItem.servingQuantity,
+                                    ),
+                                  );
+
+                                  context.read<IntermediateItemsBloc>().add(
+                                    LoadIntermediateItemsEvents(),
+                                  );
+
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Dialog(
+                                        child:
+                                            AlertDialogsforScreens.createAlertDialogforSuccess(
+                                              context,
+                                              'Food Item Added in Report',
+                                            ),
+                                      );
+                                    },
+                                  );
+                                } 
+                                else {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Dialog(
+                                        child: AlertDialogsforScreens.createAlertContainerForNoData(
+                                          context,
+
+                                          'Available quantity to prepare food  is less than required',
+                                          Icons.warning,
+                                        ),
+                                      );
+                                    },
+                                    
+                                  );
+                                }
+                              }
                             },
+
                             child: Text('Serve', style: textTheme.bodyMedium),
                           ),
 

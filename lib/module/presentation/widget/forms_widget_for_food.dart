@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
-import 'package:hive_project/common/style/common_style.dart';
-import 'package:hive_project/core/config/themes/colors.dart';
 import 'package:hive_project/core/config/themes/custom_theme/text_field_theme.dart';
 import 'package:hive_project/module/data/models/intermediate_items/intermediate_item_models.dart';
 import 'package:hive_project/module/presentation/bloc/food/food_items_bloc.dart';
@@ -89,17 +87,11 @@ class _AddFoodDialogState extends State<AddFoodDialog> {
 
                 return SingleChildScrollView(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Food Name'),
-                      TextFieldsTheme.createTextField(
-                        context,
-                        foodNameController,
-                        'Enter Food Name',
-                        (val) => null,
+                      TextField(
+                        controller: foodNameController,
+                        decoration: InputDecoration(labelText: "Food Name"),
                       ),
-
-                      Text('Select Intermediate Item'),
                       DropdownButtonFormField<IntermediateItemsModels>(
                         decoration: InputDecoration(
                           labelText: 'Select IntermediateItem',
@@ -124,7 +116,7 @@ class _AddFoodDialogState extends State<AddFoodDialog> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text('Required Items'),
-                            TextFieldsTheme.createTextField(
+                            TextFieldsTheme.createTextFieldwithOnChange(
                               context,
                               itemControllers[i],
                               'Item',
@@ -133,22 +125,22 @@ class _AddFoodDialogState extends State<AddFoodDialog> {
                                 context.read<FormsBloc>().add(
                                   UpdateAdditionalFormEvent(
                                     index: i,
-                                    itemName: val ?? '',
+                                    itemName: val,
                                     quantity: item.quantity,
                                     price: item.price,
                                   ),
                                 );
-                                return null;
+                                // return null;
                               },
                             ),
                             SizedBox(width: 8),
                             Text('Required Quantity'),
-                            TextFieldsTheme.createTextField(
+                            TextFieldsTheme.createTextFieldwithOnChange(
                               context,
                               qtyControllers[i],
                               'Qty',
                               (val) {
-                                final parsed = double.tryParse(val ?? '') ?? 0;
+                                final parsed = double.tryParse(val) ?? 0;
                                 context.read<FormsBloc>().add(
                                   UpdateAdditionalFormEvent(
                                     index: i,
@@ -157,16 +149,16 @@ class _AddFoodDialogState extends State<AddFoodDialog> {
                                     price: item.price,
                                   ),
                                 );
-                                return null;
+                                // return null;
                               },
                             ),
                             Text('Price'),
-                            TextFieldsTheme.createTextField(
+                            TextFieldsTheme.createTextFieldwithOnChange(
                               context,
                               priceControllers[i],
                               'Price',
                               (val) {
-                                final parsed = double.tryParse(val ?? '') ?? 0;
+                                final parsed = double.tryParse(val) ?? 0;
                                 context.read<FormsBloc>().add(
                                   UpdateAdditionalFormEvent(
                                     index: i,
@@ -175,23 +167,13 @@ class _AddFoodDialogState extends State<AddFoodDialog> {
                                     price: parsed,
                                   ),
                                 );
-                                return null;
+                                // return null;
                               },
                             ),
                           ],
                         );
                       }),
-                      SizedBox(height: 10),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          padding: EdgeInsets.symmetric(
-                            vertical: CommonStyle.contanersPadding,
-                            horizontal: CommonStyle.contanersPadding,
-                          ),
-                        ),
+                      TextButton(
                         onPressed: () {
                           context.read<FormsBloc>().add(AddnewFormEvent());
                           setState(() {
@@ -200,7 +182,7 @@ class _AddFoodDialogState extends State<AddFoodDialog> {
                             priceControllers.add(TextEditingController());
                           });
                         },
-                        child: Text("Add Other Items",),
+                        child: Text("+ Add Item"),
                       ),
                     ],
                   ),
@@ -212,16 +194,6 @@ class _AddFoodDialogState extends State<AddFoodDialog> {
           ),
           actions: [
             ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.buttonColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                padding: EdgeInsets.symmetric(
-                  vertical: CommonStyle.contanersPadding,
-                  horizontal: CommonStyle.contanersPadding,
-                ),
-              ),
               onPressed: () {
                 final name = foodNameController.text;
                 final inter = selectedIntermediateItem;
@@ -230,7 +202,12 @@ class _AddFoodDialogState extends State<AddFoodDialog> {
                 if (formsState is FormLoadedState && inter != null) {
                   final validItems =
                       formsState.forms
-                          .where((f) => f.itemName.isNotEmpty && f.quantity > 0)
+                          .where(
+                            (f) =>
+                                f.itemName.isNotEmpty &&
+                                f.quantity > 0 &&
+                                f.price > 0,
+                          )
                           .toList();
 
                   context.read<FoodPrepBloc>().add(

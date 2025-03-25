@@ -11,6 +11,7 @@ import 'package:hive_project/module/data/models/ingredients_items/ingredients_it
 import 'package:hive_project/module/presentation/bloc/intermediate_items/intermediate_items_bloc.dart';
 import 'package:hive_project/module/presentation/bloc/intermediate_items/intermediate_items_events.dart';
 import 'package:hive_project/module/presentation/bloc/intermediate_items/intermediate_items_state.dart';
+import 'package:hive_project/module/presentation/screens/kitchen/preperation_process/food_preperation_by_intermediateItems.dart';
 import 'package:hive_project/module/presentation/widget/navigation_widget.dart';
 
 class IntermediateItems extends StatelessWidget {
@@ -18,65 +19,6 @@ class IntermediateItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void _alertdialog() {
-      showDialog(
-        context: context,
-        builder:
-            (context) => AlertDialog(
-              content: SingleChildScrollView(
-                child: AlertDialogsforScreens.createAlertDialogWhenPrepareButtonPressed(
-                  context,
-                  'Chapati',
-                  25,
-                  Row(
-                    children: [
-                      Container(
-                        color: Colors.white,
-                        width: MediaQuery.of(context).size.width * 0.38,
-                        child: Column(
-                          children: [
-                            ContainersWithinScreens.creatingheadingThreeColumns(
-                              context,
-                              'Materials used',
-                              'Price',
-                              'Quantity ',
-                              AppColors.containerColor,
-                            ),
-                            ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: 5,
-                              itemBuilder: (context, index) {
-                                return ContainersWithinScreens.creatingheadingThreeColumns(
-                                  context,
-                                  'heading1',
-                                  'heading2',
-                                  'heading3',
-                                  AppColors.surfaceColor,
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.325,
-                        color: AppColors.containerColor,
-                        child: Text(
-                          'tyo food item prepare garne process',
-                          style: TextThemes.createTextTheme(context).titleSmall,
-                        ),
-                      ),
-                    ],
-                  ),
-                  'materials',
-                  1,
-                ),
-              ),
-            ),
-      );
-    }
-
     final textTheme = TextThemes.createTextTheme(context);
     final TextEditingController controller = TextEditingController();
 
@@ -165,7 +107,8 @@ class IntermediateItems extends StatelessWidget {
                                   final ingredientName =
                                       ingredientModel?.ingredientname ??
                                       'Unknown';
-                                  return ContainersWithinScreens.createHeadingforIntermediateItems(
+                                    
+                                    return ContainersWithinScreens.createHeadingforIntermediateItems(
                                     context,
                                     item.intermediateItemName,
                                     ingredientName,
@@ -173,76 +116,91 @@ class IntermediateItems extends StatelessWidget {
                                     item.requiredQuantity.toString(),
                                     Row(
                                       children: [
-                                        IconButton(
-                                          onPressed:
-                                              item.availableQuantity >=
-                                                      item.requiredQuantity
-                                                  ? () {
-                                                    context
-                                                        .read<
-                                                          IntermediateItemsBloc
-                                                        >()
-                                                        .add(
-                                                          IncrementServingQuantityEvent(
-                                                            index: index,
-                                                          ),
-                                                        );
-                                                  }
-                                                  : null,
-                                          icon: Icon(Icons.add),
-                                        ),
-                                        Text(
-                                          item.servingQuantity.toString(),
-                                          style: textTheme.titleSmall,
-                                        ),
-                                        IconButton(
-                                          onPressed:
-                                              item.servingQuantity > 1
-                                                  ? () {
-                                                    context
-                                                        .read<
-                                                          IntermediateItemsBloc
-                                                        >()
-                                                        .add(
-                                                          DecrementServingQuantityEvent(
-                                                            index: index,
-                                                          ),
-                                                        );
-                                                  }
-                                                  : null,
-                                          icon: Icon(Icons.remove),
-                                        ),
+                                      IconButton(
+                                        onPressed:
+                                          item.availableQuantity >=
+                                              item.requiredQuantity
+                                            ? () {
+                                            context
+                                              .read<
+                                                IntermediateItemsBloc
+                                              >()
+                                              .add(
+                                                IncrementServingQuantityEvent(
+                                                index: index,
+                                                ),
+                                              );
+                                            }
+                                            : null,
+                                        icon: Icon(Icons.add),
+                                      ),
+                                      Text(
+                                        item.servingQuantity.toString(),
+                                        style: textTheme.titleSmall,
+                                      ),
+                                      IconButton(
+                                        onPressed:
+                                          item.servingQuantity > 1
+                                            ? () {
+                                            context
+                                              .read<
+                                                IntermediateItemsBloc
+                                              >()
+                                              .add(
+                                                DecrementServingQuantityEvent(
+                                                index: index,
+                                                ),
+                                              );
+                                            }
+                                            : null,
+                                        icon: Icon(Icons.remove),
+                                      ),
                                       ],
                                     ),
                                     ElevatedButton(
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: AppColors.buttonColor,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            8,
-                                          ),
-                                        ),
-                                        padding: EdgeInsets.symmetric(
-                                          vertical:
-                                              CommonStyle.contanersPadding,
-                                          horizontal:
-                                              CommonStyle.contanersPadding,
+                                      backgroundColor: AppColors.buttonColor,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                        8,
                                         ),
                                       ),
+                                      padding: EdgeInsets.symmetric(
+                                        vertical:
+                                          CommonStyle.contanersPadding,
+                                        horizontal:
+                                          CommonStyle.contanersPadding,
+                                      ),
+                                      ),
                                       onPressed: () {
-                                        if (item.requiredQuantity <=
-                                            item.availableQuantity) {
-                                          _alertdialog();
-                                        } else {
-                                          ScaffoldMessenger.of(
-                                            context,
-                                          ).showSnackBar(
-                                            SnackBar(
-                                              content: Text(
-                                                'You can\'t prepare food since the required materials are not available.',
-                                              ),
+                                      if (item.requiredQuantity <=
+                                        item.availableQuantity) {
+                                        Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder:
+                                            (
+                                            _,
+                                            ) => FoodListByIntermediateScreen(
+                                            selectedIntermediateItemName:
+                                              item.intermediateItemName,
                                             ),
+                                        ),
+                                        );
+                                      } else {
+                                        showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return Dialog(
+                                          child: AlertDialogsforScreens.createAlertContainerForNoData(
+                                            context,
+
+                                            'Available quantity to prepare food  is less than required, go to market and buy the required materials',
+                                            Icons.warning,
+                                          ),
                                           );
+                                        },
+                                        );
                                         }
                                       },
                                       child: Text(

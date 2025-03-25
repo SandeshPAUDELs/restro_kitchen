@@ -7,7 +7,7 @@ import 'package:hive_project/module/data/models/intermediate_items/intermediate_
 import 'package:hive_project/module/presentation/bloc/food/food_item_state.dart';
 import 'package:hive_project/module/presentation/bloc/food/food_items_bloc.dart';
 import 'package:hive_project/module/presentation/bloc/food/food_items_events.dart';
-import 'package:hive_project/module/presentation/screens/kitchen/preperation_process/food_prep_guide.dart';
+import 'package:hive_project/module/presentation/screens/kitchen/preperation_process/food_prep_steps.dart';
 import 'package:hive_project/module/presentation/widget/forms_widget_for_food.dart';
 import 'package:hive_project/module/presentation/widget/navigation_widget.dart';
 
@@ -52,7 +52,7 @@ class AddFoodScreen extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder:
-                                    (_) => FoodDetailsScreen(
+                                    (_) => FoodPreeperationDetailsScreen(
                                       food: food,
                                       intermediateItemName:
                                           intermediateItemName,

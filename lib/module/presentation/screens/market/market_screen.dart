@@ -161,7 +161,6 @@ class _MarketScreenState extends State<MarketScreen> {
                               'Price',
                               'Units',
                               Text('Action', style: textTheme.bodyMedium),
-                              // '',
                               AppColors.containerColor,
                             ),
 
@@ -220,10 +219,15 @@ class _MarketScreenState extends State<MarketScreen> {
                                                           item.ingredientname,
                                                       price: item.price,
                                                       materialUnit:
-                                                          item.materialsUnit.toDouble(),
+                                                          item.materialsUnit
+                                                              .toDouble(),
                                                     ),
                                                   );
+
                                             },
+                                            
+
+
                                             child: Text(
                                               'Buy',
                                               style: textTheme.bodyMedium,

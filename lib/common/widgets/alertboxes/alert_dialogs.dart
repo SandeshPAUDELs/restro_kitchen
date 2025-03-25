@@ -72,7 +72,7 @@ class AlertDialogsforScreens {
             textAlign: TextAlign.center,
             style: TextThemes.createTextTheme(
               context,
-            ).headlineSmall!.copyWith(fontWeight: FontWeight.w600),
+            ).bodyMedium!.copyWith(fontWeight: FontWeight.w600),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
