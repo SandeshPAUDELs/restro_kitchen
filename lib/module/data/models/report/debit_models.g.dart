@@ -1,29 +1,29 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'debit_report_models.dart';
+part of 'debit_models.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class DebitReportModelsAdapter extends TypeAdapter<DebitReportModels> {
+class DebitModelsAdapter extends TypeAdapter<DebitModels> {
   @override
   final int typeId = 6;
 
   @override
-  DebitReportModels read(BinaryReader reader) {
+  DebitModels read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return DebitReportModels(
+    return DebitModels(
       foodName: fields[0] as String,
       servingQuantity: fields[1] as int,
     );
   }
 
   @override
-  void write(BinaryWriter writer, DebitReportModels obj) {
+  void write(BinaryWriter writer, DebitModels obj) {
     writer
       ..writeByte(2)
       ..writeByte(0)
@@ -38,7 +38,7 @@ class DebitReportModelsAdapter extends TypeAdapter<DebitReportModels> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is DebitReportModelsAdapter &&
+      other is DebitModelsAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

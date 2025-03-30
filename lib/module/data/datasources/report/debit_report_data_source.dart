@@ -1,23 +1,25 @@
 import 'package:hive/hive.dart';
-import 'package:hive_project/module/data/models/Report/debit_report_models.dart';
+import 'package:hive_project/module/data/models/report/debit_models.dart';
 
 abstract class DebitReportDataSource {
-  List<DebitReportModels> getDebitReportItems();
+  List<DebitModels> getDebitReportItems();
+
   Future<void> addDebitReportItems(String foodName, int servingQuantity);
 }
 
 class DebitReportDataSourceImpl extends DebitReportDataSource {
-  final Box<DebitReportModels> debitReportBox;
+  final Box<DebitModels> debitReportBox;
   DebitReportDataSourceImpl({required this.debitReportBox});
 
   @override
   Future<void> addDebitReportItems(String foodName, int servingQuantity) async {
-    await debitReportBox.add(DebitReportModels(foodName: foodName, servingQuantity: servingQuantity));
+    await debitReportBox.add(
+      DebitModels(foodName: foodName, servingQuantity: servingQuantity),
+    );
   }
 
   @override
-  List<DebitReportModels> getDebitReportItems() {
+  List<DebitModels> getDebitReportItems() {
     return debitReportBox.values.toList();
   }
-
 }

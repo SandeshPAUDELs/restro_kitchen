@@ -8,6 +8,7 @@ import 'package:hive_project/core/config/themes/colors.dart';
 import 'package:hive_project/core/config/themes/custom_theme/text_field_theme.dart';
 import 'package:hive_project/core/config/themes/custom_theme/text_theme.dart';
 import 'package:hive_project/module/data/models/ingredients_items/ingredients_item_models.dart';
+import 'package:hive_project/module/data/models/report/credit_models.dart';
 import 'package:hive_project/module/presentation/bloc/intermediate_items/intermediate_items_bloc.dart';
 import 'package:hive_project/module/presentation/bloc/intermediate_items/intermediate_items_events.dart';
 import 'package:hive_project/module/presentation/bloc/intermediate_items/intermediate_items_state.dart';
@@ -22,11 +23,7 @@ class IntermediateItems extends StatelessWidget {
     final textTheme = TextThemes.createTextTheme(context);
     final TextEditingController controller = TextEditingController();
 
-    final Box<IngredientsItemModels> ingredientItemBox =
-        Hive.box<IngredientsItemModels>('ingredientItemBox');
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<IntermediateItemsBloc>().add(LoadIntermediateItemsEvents());
-    });
+    context.read<IntermediateItemsBloc>().add(LoadIntermediateItemsEvents());
     return Scaffold(
       backgroundColor: AppColors.surfaceColor,
       body: Padding(
@@ -107,8 +104,8 @@ class IntermediateItems extends StatelessWidget {
                                   final ingredientName =
                                       ingredientModel?.ingredientname ??
                                       'Unknown';
-                                    
-                                    return ContainersWithinScreens.createHeadingforIntermediateItems(
+
+                                  return ContainersWithinScreens.createHeadingforIntermediateItems(
                                     context,
                                     item.intermediateItemName,
                                     ingredientName,
@@ -116,91 +113,91 @@ class IntermediateItems extends StatelessWidget {
                                     item.requiredQuantity.toString(),
                                     Row(
                                       children: [
-                                      IconButton(
-                                        onPressed:
-                                          item.availableQuantity >=
-                                              item.requiredQuantity
-                                            ? () {
-                                            context
-                                              .read<
-                                                IntermediateItemsBloc
-                                              >()
-                                              .add(
-                                                IncrementServingQuantityEvent(
-                                                index: index,
-                                                ),
-                                              );
-                                            }
-                                            : null,
-                                        icon: Icon(Icons.add),
-                                      ),
-                                      Text(
-                                        item.servingQuantity.toString(),
-                                        style: textTheme.titleSmall,
-                                      ),
-                                      IconButton(
-                                        onPressed:
-                                          item.servingQuantity > 1
-                                            ? () {
-                                            context
-                                              .read<
-                                                IntermediateItemsBloc
-                                              >()
-                                              .add(
-                                                DecrementServingQuantityEvent(
-                                                index: index,
-                                                ),
-                                              );
-                                            }
-                                            : null,
-                                        icon: Icon(Icons.remove),
-                                      ),
+                                        IconButton(
+                                          onPressed:
+                                              item.availableQuantity >=
+                                                      item.requiredQuantity
+                                                  ? () {
+                                                    context
+                                                        .read<
+                                                          IntermediateItemsBloc
+                                                        >()
+                                                        .add(
+                                                          IncrementServingQuantityEvent(
+                                                            index: index,
+                                                          ),
+                                                        );
+                                                  }
+                                                  : null,
+                                          icon: Icon(Icons.add),
+                                        ),
+                                        Text(
+                                          item.servingQuantity.toString(),
+                                          style: textTheme.titleSmall,
+                                        ),
+                                        IconButton(
+                                          onPressed:
+                                              item.servingQuantity > 1
+                                                  ? () {
+                                                    context
+                                                        .read<
+                                                          IntermediateItemsBloc
+                                                        >()
+                                                        .add(
+                                                          DecrementServingQuantityEvent(
+                                                            index: index,
+                                                          ),
+                                                        );
+                                                  }
+                                                  : null,
+                                          icon: Icon(Icons.remove),
+                                        ),
                                       ],
                                     ),
                                     ElevatedButton(
                                       style: ElevatedButton.styleFrom(
-                                      backgroundColor: AppColors.buttonColor,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                        8,
+                                        backgroundColor: AppColors.buttonColor,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
                                         ),
-                                      ),
-                                      padding: EdgeInsets.symmetric(
-                                        vertical:
-                                          CommonStyle.contanersPadding,
-                                        horizontal:
-                                          CommonStyle.contanersPadding,
-                                      ),
+                                        padding: EdgeInsets.symmetric(
+                                          vertical:
+                                              CommonStyle.contanersPadding,
+                                          horizontal:
+                                              CommonStyle.contanersPadding,
+                                        ),
                                       ),
                                       onPressed: () {
-                                      if (item.requiredQuantity <=
-                                        item.availableQuantity) {
-                                        Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder:
-                                            (
-                                            _,
-                                            ) => FoodListByIntermediateScreen(
-                                            selectedIntermediateItemName:
-                                              item.intermediateItemName,
-                                            ),
-                                        ),
-                                        );
-                                      } else {
-                                        showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return Dialog(
-                                          child: AlertDialogsforScreens.createAlertContainerForNoData(
+                                        if (item.requiredQuantity <=
+                                            item.availableQuantity) {
+                                          Navigator.push(
                                             context,
-
-                                            'Available quantity to prepare food  is less than required, go to market and buy the required materials',
-                                            Icons.warning,
-                                          ),
+                                            MaterialPageRoute(
+                                              builder:
+                                                  (
+                                                    _,
+                                                  ) => FoodListByIntermediateScreen(
+                                                    selectedIntermediateItemName:
+                                                        item.intermediateItemName,
+                                                  ),
+                                            ),
                                           );
-                                        },
-                                        );
+                                        } else {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return Dialog(
+                                                child: AlertDialogsforScreens.createAlertContainerForNoData(
+                                                  context,
+
+                                                  'Available quantity to prepare food  is less than required, go to market and buy the required materials',
+                                                  Icons.warning,
+                                                ),
+                                              );
+                                            },
+                                          );
                                         }
                                       },
                                       child: Text(
@@ -225,20 +222,30 @@ class IntermediateItems extends StatelessWidget {
           ),
         ),
       ),
-
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          showDialog(
+        onPressed: () async {
+          final creditBox = Hive.box<CreditModels>('creditReportBox');
+          final creditItems = creditBox.values.toList();
+
+          if (creditItems.isEmpty) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  'there is no materials first buy materials from market',
+                ),
+              ),
+            );
+            return;
+          }
+
+          final result = await showDialog<Map<String, dynamic>>(
             context: context,
             builder: (context) {
-              final TextEditingController itemNameController =
-                  TextEditingController();
-              final TextEditingController requiredQuantityController =
-                  TextEditingController();
-              final TextEditingController servingQuantityController =
-                  TextEditingController();
-              IngredientsItemModels? selectedIngredient;
-              int? availableQuantity;
+              final itemNameController = TextEditingController();
+              final requiredController = TextEditingController();
+              final servingController = TextEditingController();
+              CreditModels? selectedItem;
+              double? availableQty;
 
               return StatefulBuilder(
                 builder: (context, setState) {
@@ -251,50 +258,47 @@ class IntermediateItems extends StatelessWidget {
                           TextField(
                             controller: itemNameController,
                             decoration: InputDecoration(
-                              labelText: 'Intermediate Item Name',
+                              labelText: 'Item Name',
                               border: OutlineInputBorder(),
                             ),
                           ),
-                          SizedBox(height: 10),
-                          DropdownButtonFormField<IngredientsItemModels>(
+                          SizedBox(height: 16),
+                          DropdownButtonFormField<CreditModels>(
+                            value: selectedItem,
                             decoration: InputDecoration(
                               labelText: 'Select Ingredient',
                               border: OutlineInputBorder(),
                             ),
                             items:
-                                ingredientItemBox.values.map((ingredient) {
-                                  return DropdownMenuItem<
-                                    IngredientsItemModels
-                                  >(
-                                    value: ingredient,
-                                    child: Text(ingredient.ingredientname),
+                                creditItems.map((item) {
+                                  return DropdownMenuItem<CreditModels>(
+                                    value: item,
+                                    child: Text(item.ingredient),
                                   );
                                 }).toList(),
                             onChanged: (value) {
                               setState(() {
-                                selectedIngredient = value;
-                                availableQuantity = value?.materialsUnit;
+                                selectedItem = value;
+                                availableQty = value?.materialUnit;
                               });
                             },
                           ),
-
-                          if (availableQuantity != null)
-                            Text(
-                              'Available Quantity: $availableQuantity',
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          SizedBox(height: 10),
+                          if (availableQty != null) ...[
+                            SizedBox(height: 8),
+                            Text('Available: $availableQty'),
+                          ],
+                          SizedBox(height: 16),
                           TextField(
-                            controller: requiredQuantityController,
+                            controller: requiredController,
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                               labelText: 'Required Quantity',
                               border: OutlineInputBorder(),
                             ),
                           ),
-                          SizedBox(height: 10),
+                          SizedBox(height: 16),
                           TextField(
-                            controller: servingQuantityController,
+                            controller: servingController,
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                               labelText: 'Serving Quantity',
@@ -306,36 +310,27 @@ class IntermediateItems extends StatelessWidget {
                     ),
                     actions: [
                       TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
+                        onPressed: () => Navigator.pop(context),
                         child: Text('Cancel'),
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          if (itemNameController.text.isNotEmpty &&
-                              selectedIngredient != null &&
-                              requiredQuantityController.text.isNotEmpty &&
-                              servingQuantityController.text.isNotEmpty) {
-                            final item = itemNameController.text;
-                            final ingredient = selectedIngredient!.key as int;
-                            final requiredQuantity =
-                                requiredQuantityController.text;
-                            final servingQuantity =
-                                servingQuantityController.text;
-
-                            context.read<IntermediateItemsBloc>().add(
-                              AddIntermediateItemsEvents(
-                                ingredientsItemModels: ingredient,
-                                intermediateItemName: item,
-                                availableQuantity: availableQuantity!,
-                                requiredQuantity: int.parse(requiredQuantity),
-                                servingQuantity: int.parse(servingQuantity),
-                              ),
+                          if (itemNameController.text.isEmpty ||
+                              selectedItem == null ||
+                              requiredController.text.isEmpty ||
+                              servingController.text.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Fill all the fields')),
                             );
-
-                            Navigator.of(context).pop();
+                            return;
                           }
+
+                          Navigator.pop(context, {
+                            'name': itemNameController.text,
+                            'ingredient': selectedItem!,
+                            'required': double.parse(requiredController.text),
+                            'serving': double.parse(servingController.text),
+                          });
                         },
                         child: Text('Add'),
                       ),
@@ -345,8 +340,20 @@ class IntermediateItems extends StatelessWidget {
               );
             },
           );
+
+          if (result != null) {
+            context.read<IntermediateItemsBloc>().add(
+              AddIntermediateItemsEvents(
+                intermediateItemName: result['name'],
+                ingredientsItemModels: result['ingredient'].key as int,
+                availableQuantity: result['ingredient'].materialUnit.toInt(),
+                requiredQuantity: result['required'].toInt(),
+                servingQuantity: result['serving'].toInt(),
+              ),
+            );
+          }
         },
-        label: Text('Add Intermediate Items'),
+        label: Text('Add Intermediate items'),
         icon: Icon(Icons.add),
       ),
     );

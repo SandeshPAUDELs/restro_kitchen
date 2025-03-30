@@ -6,12 +6,12 @@ import 'package:hive_project/module/data/datasources/ingredients_items_data_sour
 import 'package:hive_project/module/data/datasources/intermediate_items_data_source.dart';
 import 'package:hive_project/module/data/datasources/report/credit_report_data_source.dart';
 import 'package:hive_project/module/data/datasources/report/debit_report_data_source.dart';
-import 'package:hive_project/module/data/models/Report/debit_report_models.dart';
 import 'package:hive_project/module/data/models/food/food_models.dart';
 import 'package:hive_project/module/data/models/ingredients/ingredients_models.dart';
 import 'package:hive_project/module/data/models/ingredients_items/ingredients_item_models.dart';
 import 'package:hive_project/module/data/models/intermediate_items/intermediate_item_models.dart';
 import 'package:hive_project/module/data/models/report/credit_models.dart';
+import 'package:hive_project/module/data/models/report/debit_models.dart';
 import 'package:hive_project/module/data/repositories/food_prep_repo_impl.dart';
 import 'package:hive_project/module/data/repositories/ingredients_items_repo_impl.dart';
 import 'package:hive_project/module/data/repositories/ingredients_repo_impl.dart';
@@ -47,9 +47,8 @@ Future<void> injection() async {
   Hive.registerAdapter(IntermediateItemsModelsAdapter());
   Hive.registerAdapter(OtherRequiredFoodModelsAdapter());
   Hive.registerAdapter(FoodModelsAdapter());
-  Hive.registerAdapter(DebitReportModelsAdapter());
+  Hive.registerAdapter(DebitModelsAdapter());
   Hive.registerAdapter(CreditModelsAdapter());
-
 
   // boxes
   await Hive.openBox<IngredientModels>('ingredientBox');
@@ -57,10 +56,8 @@ Future<void> injection() async {
   await Hive.openBox<IntermediateItemsModels>('intermediateItemsBox');
   await Hive.openBox<OtherRequiredFoodModels>('otherRequiredFoodBox');
   await Hive.openBox<FoodModels>('foodBox');
-  await Hive.openBox<DebitReportModels>('debitReportBox');
+  await Hive.openBox<DebitModels>('debitReportBox');
   await Hive.openBox<CreditModels>('creditReportBox');
-
-
 
   // datasources
   getIt.registerLazySingleton<IngredientsDataSource>(
@@ -75,13 +72,19 @@ Future<void> injection() async {
   );
   getIt.registerLazySingleton<IntermediateItemsDataSource>(
     () => IntermediateItemsDataSourceImpl(
-      intermediateItemsBox: Hive.box<IntermediateItemsModels>('intermediateItemsBox'),
+      intermediateItemsBox: Hive.box<IntermediateItemsModels>(
+        'intermediateItemsBox',
+      ),
     ),
   );
-  getIt.registerLazySingleton<FoodPrepDataSource>(() => FoodPrepDataSourceImpl(
-    foodBox: Hive.box<FoodModels>('foodBox'),
-    otherRequiredFoodBox: Hive.box<OtherRequiredFoodModels>('otherRequiredFoodBox'),
-  ));
+  getIt.registerLazySingleton<FoodPrepDataSource>(
+    () => FoodPrepDataSourceImpl(
+      foodBox: Hive.box<FoodModels>('foodBox'),
+      otherRequiredFoodBox: Hive.box<OtherRequiredFoodModels>(
+        'otherRequiredFoodBox',
+      ),
+    ),
+  );
   getIt.registerLazySingleton<CreditReportDataSource>(
     () => CreditReportDataSourceImpl(
       creditReportBox: Hive.box<CreditModels>('creditReportBox'),
@@ -89,11 +92,10 @@ Future<void> injection() async {
   );
   getIt.registerLazySingleton<DebitReportDataSource>(
     () => DebitReportDataSourceImpl(
-      debitReportBox: Hive.box<DebitReportModels>('debitReportBox'),
+      debitReportBox: Hive.box<DebitModels>('debitReportBox'),
     ),
   );
-  
-  
+
   // repos
   getIt.registerLazySingleton<IngredientsRepo>(
     () => IngredientsRepoImpl(dataSource: getIt()),
@@ -104,7 +106,9 @@ Future<void> injection() async {
   getIt.registerLazySingleton<IntermediateItemsRepo>(
     () => IntermediateItemsRepoImpl(dataSource: getIt()),
   );
-  getIt.registerLazySingleton<FoodPrepRepo>(() => FoodPrepRepoImpl(dataSource: getIt()));
+  getIt.registerLazySingleton<FoodPrepRepo>(
+    () => FoodPrepRepoImpl(dataSource: getIt()),
+  );
   getIt.registerLazySingleton<CreditReportRepo>(
     () => CreditReportRepoImpl(creditReportDataSource: getIt()),
   );

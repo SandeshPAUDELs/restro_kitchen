@@ -12,4 +12,4 @@ class IntermediateItemsEntity {
     required this.requiredQuantity,
     required this.servingQuantity,
   });    
-}
+} 

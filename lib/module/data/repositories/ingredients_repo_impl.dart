@@ -16,6 +16,4 @@ class IngredientsRepoImpl extends IngredientsRepo {
   Future<void> addIngredient(String name) {
     return dataSource.addIngredient(name);
   }
-
-
 }
