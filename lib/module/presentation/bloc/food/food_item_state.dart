@@ -1,6 +1,10 @@
+import 'package:equatable/equatable.dart';
 import 'package:hive_project/module/domain/entities/food/food_entities.dart';
 
-abstract class FoodPrepState {}
+abstract class FoodPrepState extends Equatable{
+  @override
+  List<Object?> get props => [];
+}
 
 class FoodPrepInitial extends FoodPrepState {}
 

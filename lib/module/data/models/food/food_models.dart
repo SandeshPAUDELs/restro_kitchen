@@ -17,6 +17,23 @@ class FoodModels extends HiveObject {
     required this.otherRequiredFoodModels,
 
   });
+
+  @override
+  bool operator == (Object other) {
+    if (identical(this, other)) return true;
+
+    return other is FoodModels &&
+        other.foodName == foodName &&
+        other.intermediateItemsModels == intermediateItemsModels &&
+        other.otherRequiredFoodModels == otherRequiredFoodModels;
+  }
+
+  @override
+  int get hashCode {
+    return foodName.hashCode ^
+        intermediateItemsModels.hashCode ^
+        otherRequiredFoodModels.hashCode;
+  }
 }
 
 @HiveType(typeId: 4)
@@ -33,4 +50,19 @@ class OtherRequiredFoodModels extends HiveObject {
     required this.quantity,
     required this.price,
   });
+
+  @override
+  bool operator == (Object other) {
+    if (identical(this, other)) return true;
+
+    return other is OtherRequiredFoodModels &&
+        other.itemName == itemName &&
+        other.quantity == quantity &&
+        other.price == price;
+  }
+
+  @override
+  int get hashCode {
+    return itemName.hashCode ^ quantity.hashCode ^ price.hashCode;
+  }
 }

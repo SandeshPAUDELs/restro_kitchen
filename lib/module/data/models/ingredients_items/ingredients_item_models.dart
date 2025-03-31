@@ -18,4 +18,23 @@ class IngredientsItemModels extends HiveObject {
     required this.price,
     required this.materialsUnit, 
   });
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is IngredientsItemModels &&
+        other.ingredientname == ingredientname &&
+        other.ingredientModels == ingredientModels &&
+        other.price == price &&
+        other.materialsUnit == materialsUnit;
+  }
+
+  @override
+  int get hashCode {
+    return ingredientname.hashCode ^
+        ingredientModels.hashCode ^
+        price.hashCode ^
+        materialsUnit.hashCode;
+  }
 }

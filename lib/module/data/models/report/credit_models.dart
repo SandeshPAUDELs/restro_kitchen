@@ -13,7 +13,22 @@ class CreditModels extends HiveObject{
   CreditModels({
     required this.ingredient,
     required this.price,
-    required this.materialUnit,
+    required this.materialUnit, 
   });
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is CreditModels &&
+        other.ingredient == ingredient &&
+        other.price == price &&
+        other.materialUnit == materialUnit;
+  }
+
+  @override
+  int get hashCode {
+    return ingredient.hashCode ^ price.hashCode ^ materialUnit.hashCode;
+  }
 
 }

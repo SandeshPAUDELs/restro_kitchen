@@ -11,4 +11,18 @@ class DebitModels extends HiveObject{
     required this.foodName,
     required this.servingQuantity,
   });
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is DebitModels &&
+        other.foodName == foodName &&
+        other.servingQuantity == servingQuantity;
+  }
+
+  @override
+  int get hashCode {
+    return foodName.hashCode ^ servingQuantity.hashCode;
+  }
 }
